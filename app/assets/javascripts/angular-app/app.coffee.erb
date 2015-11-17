@@ -8,10 +8,10 @@ angular.module 'app', [
 
     $routeProvider
       .when '/',
-        templateUrl: "/assets/CalculoRecebimento/index"
+        templateUrl: "<%= asset_path("CalculoRecebimento/index") %>"
         controller: 'Cobranca::IndexCtrl'
       .when '/cobrancas',
-        templateUrl: "/assets/CalculoRecebimento/index"
+        templateUrl: "<%= asset_path("CalculoRecebimento/index") %>"
         controller: 'Cobranca::IndexCtrl'
 
     $locationProvider.html5Mode true
