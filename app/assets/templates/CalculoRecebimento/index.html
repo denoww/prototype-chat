@@ -1,0 +1,122 @@
+<section id="top-menu" class="sc-p-v-sm sc-p-h-xl sc-bg-blue">
+  <img src="https://www.seucondominio.com.br/assets/institucional/logo-mobile-c07a4de0cd57b02cf5eaffefcda8d48e.png"/>
+</section>
+
+<section id="corpo">
+  <section id="receber" style="width: 50%" class="pull-left">
+    <div class="sc-m-t-lg">
+      <p class="sc-text-gray">Receber</p>
+      <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
+        <label>
+          <div class="sc-label">Valor</div>
+          <input sc-currency-input="sc-currency-input" ng-model="receber.valor" class="sc-input-default"/>
+        </label>
+      </div>
+      <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
+        <label>
+          <div class="sc-label">Data</div>
+          <input sc-currency-data="sc-currency-data" type="date" ng-model="receber.data" class="sc-input-default"/>
+        </label>
+      </div>
+      <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
+        <label>
+          <div class="sc-label">Juros</div>
+          <input sc-currency-input="sc-currency-input" ng-model="receber.juros" class="sc-input-default"/>
+        </label>
+      </div>
+      <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
+        <label ng-class="{'sc-cursor-not-allowed':cobranca.recebimentos.length &gt; 0}">
+          <div ng-class="{'sc-text-gray':cobranca.recebimentos.length &gt; 0}" class="sc-label">Multa</div>
+          <input ng-disabled="cobranca.recebimentos.length &gt; 0" sc-currency-input="sc-currency-input" ng-model="receber.multa" class="sc-input-default"/>
+        </label>
+      </div>
+      <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
+        <label>
+          <div class="sc-label">Dívida</div>
+          <div class="sc-p-md">{{receber.divida_cobranca || 0 | currency}}</div>
+        </label>
+      </div>
+      <div class="sc-p-l-md sc-p-b-md sc-m-t-lg">
+        <button ng-click="addRec()" class="sc-btn sc-btn-blue">Receber</button>
+      </div>
+    </div>
+  </section>
+  
+  <section id="listing">
+    <ul class="sc-accordion">
+      <li class="sc-acc-gray-light">
+        <div class="sc-accordion-head sc-cursor-default">
+          <div class="sc-accordion-elastic-col title"><span>Fulano de tal - referente a Nov/2015</span><span class="description">Pagador: Fulano de tal</span></div>
+          <div class="sc-accordion-col-12 align-right">
+            <div class="sc-text-bold">{{cobranca.valor |currency}}</div>
+            <span ng-show="cobranca.divida_cobranca" class="description">Atualizado {{cobranca.divida_cobranca | currency}} </span>
+          </div>
+        </div>
+        <div style="background: none;" class="sc-accordion-body ng-animation-slider">
+          <div class="sc-fieldset">
+            <div>
+              <p><span class="sc-text-gray">Destinatário: </span><span class="sc-text-blue">Fulano de Tal</span></p>
+              <p><span class="sc-text-gray-dark">Configuração de cobrança: </span><span class="sc-text-blue">Cobrança Mensal</span></p>
+              <p><span class="sc-text-gray-dark">Vencimento: </span><span class="sc-text-blue">{{cobranca.vencimento | date}}</span></p>
+              <p><span class="sc-text-gray-dark">Mês de referência: </span><span class="sc-text-blue">Nov/2015</span></p>
+              <p><span class="sc-text-gray">Criado em: </span><span class="sc-text-blue">11/09/2015</span></p>
+              <p><span class="sc-text-gray">Juros: </span><span class="sc-text-blue">{{cobranca.juros}} %</span></p>
+              <p><span class="sc-text-gray">Multa: </span><span class="sc-text-blue">{{cobranca.multa}} %</span></p>
+            </div>
+            <div class="sc-m-t-lg">
+              <table style="width:100%" class="sc-table">
+                <thead>
+                  <tr>
+                    <td>Composição da Cobrança</td>
+                    <td class="align-center">Valor</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in cobranca.composicaoCobranca">
+                    <td>{{item.titulo}}</td>
+                    <td class="align-center">{{item.valor | currency}}</td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <td> </td>
+                    <td class="align-center">Total: {{cobranca.totais.composicao | currency}}</td>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="sc-m-t-lg">
+              <table style="width:100%" class="sc-table">
+                <thead>
+                  <tr>
+                    <td>Recebimento</td>
+                    <td class="align-center">Valor</td>
+                    <td>Ação</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in cobranca.recebimentos">
+                    <td>Data do pagamento: <span class="sc-text-blue">{{item.data | date}}</span></td>
+                    <td class="align-center">{{item.valor | currency}}</td>
+                    <td><i ng-click="deleteReceb(item, $index)" class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red"></i></td>
+                  </tr>
+                  <tr ng-show="cobranca.length == 0">
+                    <td>Não há cobranca para esta cobrança</td>
+                    <td class="align-center"> </td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <td> </td>
+                    <td class="align-center">Total: {{cobranca.totais.recebimentos | currency}}</td>
+                    <td> </td>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+</section>

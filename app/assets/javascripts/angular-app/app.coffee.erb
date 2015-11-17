@@ -1,0 +1,23 @@
+angular.module 'app', [
+  'sc.app.helpers', 'ngRoute', 'ngResource'
+]
+
+.config [
+  '$routeProvider', '$locationProvider', '$resourceProvider'
+  ($routeProvider, $locationProvider, $resourceProvider) ->
+
+    $routeProvider
+      .when '/',
+        templateUrl: "/assets/CalculoRecebimento/index"
+        controller: 'Cobranca::IndexCtrl'
+      .when '/cobrancas',
+        templateUrl: "/assets/CalculoRecebimento/index"
+        controller: 'Cobranca::IndexCtrl'
+
+    $locationProvider.html5Mode true
+]
+
+.controller 'controll', [
+  '$scope', '$filter'
+  (sc, $filter)->
+]
