@@ -3,8 +3,6 @@ source 'https://rubygems.org'
 ruby "2.0.0"
 gem 'rails'
 
-gem 'sdoc', group: :doc
-gem 'sqlite3'
 gem 'jquery-rails'
 gem 'sass-rails'
 gem 'uglifier'
@@ -18,7 +16,9 @@ group :production do
 end
 
 group :development, :test do
+  gem 'sdoc', group: :doc
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
+  gem 'sqlite3'
   gem 'debugger' #work
   #gem 'pry-byebug' #home
 end
