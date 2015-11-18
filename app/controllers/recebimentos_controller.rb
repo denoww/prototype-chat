@@ -9,7 +9,8 @@ class RecebimentosController < ApplicationController
       if recebimento.save
         render json: {
           recebimento: recebimento,
-          divida_cobranca: cobranca.divida
+          divida_cobranca: cobranca.divida,
+          totais: cobranca.getTotais
         }
       else
         render ::Response.object_erros(recebimento)
@@ -25,7 +26,8 @@ class RecebimentosController < ApplicationController
       if recebimento.destroy
         render json: {
           recebimento: recebimento,
-          divida_cobranca: recebimento.cobranca.divida
+          divida_cobranca: recebimento.cobranca.divida,
+          totais: recebimento.cobranca.getTotais
         }
       else
         render ::Response.object_erros(recebimento)
