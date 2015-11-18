@@ -67,18 +67,21 @@
               <table style="width:100%" class="sc-table">
                 <thead>
                   <tr>
+                    <td>Data</td>
                     <td>Composição da Cobrança</td>
                     <td class="align-center">Valor</td>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="item in cobranca.composicaoCobranca">
+                    <td>{{item.created_at | date}}</td>
                     <td>{{item.titulo}}</td>
                     <td class="align-center">{{item.valor | currency}}</td>
                   </tr>
                 </tbody>
                 <thead>
                   <tr>
+                    <td> </td>
                     <td> </td>
                     <td class="align-center">Total: {{cobranca.totais.composicao | currency}}</td>
                   </tr>
