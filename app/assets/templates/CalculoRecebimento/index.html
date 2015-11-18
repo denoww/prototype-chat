@@ -9,25 +9,25 @@
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
         <label>
           <div class="sc-label">Valor</div>
-          <input sc-currency-input="sc-currency-input" ng-model="receber.valor" class="sc-input-default"/>
+          <input type='text' ng-keyup="calcularSemJurosMulta()" sc-currency-input="sc-currency-input" ng-model="receber.valor" class="sc-input-default"/>
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
         <label>
           <div class="sc-label">Data</div>
-          <input sc-currency-data="sc-currency-data" type="date" ng-model="receber.data" class="sc-input-default"/>
+          <input sc-currency-data="sc-currency-data" type="date" ng-change="calcularSemJurosMulta()" ng-model="receber.data" class="sc-input-default"/>
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
         <label>
           <div class="sc-label">Juros</div>
-          <input sc-currency-input="sc-currency-input" ng-model="receber.juros" class="sc-input-default"/>
+          <input ng-keyup="calcularComJurosMulta()" sc-currency-input="sc-currency-input" ng-model="receber.juros" class="sc-input-default"/>
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
         <label ng-class="{'sc-cursor-not-allowed':cobranca.recebimentos.length &gt; 0}">
           <div ng-class="{'sc-text-gray':cobranca.recebimentos.length &gt; 0}" class="sc-label">Multa</div>
-          <input ng-disabled="cobranca.recebimentos.length &gt; 0" sc-currency-input="sc-currency-input" ng-model="receber.multa" class="sc-input-default"/>
+          <input ng-keyup="calcularComJurosMulta()" ng-disabled="cobranca.recebimentos.length &gt; 0" sc-currency-input="sc-currency-input" ng-model="receber.multa" class="sc-input-default"/>
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
@@ -37,7 +37,15 @@
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-m-t-lg">
-        <button ng-click="addRec()" class="sc-btn sc-btn-blue">Receber</button>
+        <button ng-click="addRec()" class="sc-btn sc-btn-blue">
+          <span ng-show="receber.carregando">
+            <i class="sc-icon sc-icon-carregando-2 sc-icon-spin"></i>
+            Recebendo
+          </span>
+          <span ng-hide="receber.carregando">
+            Receber
+          </span>
+        </button>
       </div>
     </div>
   </section>
@@ -49,7 +57,7 @@
           <div class="sc-accordion-elastic-col title"><span>Fulano de tal - referente a Nov/2015</span><span class="description">Pagador: Fulano de tal</span></div>
           <div class="sc-accordion-col-12 align-right">
             <div class="sc-text-bold">{{cobranca.valor |currency}}</div>
-            <span ng-show="cobranca.divida_cobranca" class="description">Atualizado {{cobranca.divida_cobranca | currency}} </span>
+            <span ng-show="cobranca.divida_cobranca != cobranca.valor" class="description">Atualizado {{cobranca.divida_cobranca | currency}} </span>
           </div>
         </div>
         <div style="background: none;" class="sc-accordion-body ng-animation-slider">
@@ -77,6 +85,14 @@
                       <span class="sc-text-gray">{{item.created_at | date}}</span>
                        - {{item.titulo}}</td>
                     <td class="align-right">{{item.valor | currency}}</td>
+                  </tr>
+                  <tr ng-show="cobranca.totais.juros > 0" id="juros">
+                    <td>Juros</td>
+                    <td class="align-right">{{cobranca.totais.juros | currency}}</td>
+                  </tr>
+                  <tr ng-show="cobranca.totais.multa > 0" id="Multa">
+                    <td>Multa</td>
+                    <td class="align-right">{{cobranca.totais.multa | currency}}</td>
                   </tr>
                 </tbody>
                 <thead>
