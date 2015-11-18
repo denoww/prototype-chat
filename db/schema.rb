@@ -11,10 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117141710) do
+ActiveRecord::Schema.define(version: 20151118172243) do
 
   create_table "cobrancas", force: :cascade do |t|
-    t.float    "valor"
+    t.decimal  "valor",      precision: 14, scale: 2
     t.float    "juros"
     t.float    "multa"
     t.float    "atualizado"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20151117141710) do
 
   create_table "composicao_cobrancas", force: :cascade do |t|
     t.integer  "cobranca_id"
-    t.float    "valor"
+    t.decimal  "valor",       precision: 14, scale: 2
     t.string   "titulo"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -35,10 +35,10 @@ ActiveRecord::Schema.define(version: 20151117141710) do
 
   create_table "recebimentos", force: :cascade do |t|
     t.integer  "cobranca_id"
-    t.datetime "data"
-    t.float    "valor"
-    t.float    "juros"
-    t.float    "multa"
+    t.date     "data"
+    t.decimal  "valor",       precision: 14, scale: 2
+    t.decimal  "juros",       precision: 14, scale: 2
+    t.decimal  "multa",       precision: 14, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
