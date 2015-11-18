@@ -27,8 +27,8 @@ class ComposicaoCobrancasController < ApplicationController
   protected
 
   def composicao_params
-    if params[:composicao].present?
-      params.require(:composicao).permit(:valor, :cobranca_id, :titulo)
+    if params[:composicao_cobranca].present?
+      params.require(:composicao_cobranca).permit(:valor, :cobranca_id, :titulo)
     else
       {}
     end
