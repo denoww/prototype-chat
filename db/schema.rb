@@ -45,12 +45,4 @@ ActiveRecord::Schema.define(version: 20151117141710) do
 
   add_index "recebimentos", ["cobranca_id"], name: "index_recebimentos_on_cobranca_id"
 
-  create_table "users", force: :cascade do |t|
-    t.string   "login"
-    t.string   "password"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
 end
