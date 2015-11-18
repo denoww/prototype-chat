@@ -18,17 +18,21 @@ class Cobranca < ActiveRecord::Base
   end
 
   def getTotais
+    composicao = composicao_cobrancas.sum(:valor)
+    juros = recebimentos.sum(:juros)
+    multa = recebimentos.sum(:multa)
     return {
-      composicao: composicao_cobrancas.sum(:valor),
-      recebimentos: recebimentos.sum(:valor)
+      composicao: composicao + juros + multa,
+      recebimentos: recebimentos.sum(:valor),
+      juros: juros,
+      multa: multa
     }
   end
 
   def divida
-    receb = recebimentos.sum(:valor)
-    comp = composicao_cobrancas.sum(:valor)
-    return 0 if receb == comp || receb == 0
-    return comp - receb
+    totais = getTotais
+    return valor if recebimentos.empty?
+    return totais[:composicao] - totais[:recebimentos]
   end
 
 end

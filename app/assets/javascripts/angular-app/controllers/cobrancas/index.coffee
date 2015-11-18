@@ -1,7 +1,7 @@
 angular.module 'app'
   .controller 'Cobranca::IndexCtrl', [
-    '$scope', '$filter', 'CobrancaResource', 'RecebimentoResource', 'ComposicaoResource', 'ReceberResource'
-    (sc, $filter, CobrancaResource, RecebimentoResource, ComposicaoResource, ReceberResource)->
+    '$scope', '$timeout', '$filter', 'CobrancaResource', 'RecebimentoResource', 'ReceberResource'
+    (sc, $timeout, $filter, CobrancaResource, RecebimentoResource, ReceberResource)->
 
       idCobranca = 1
 
@@ -24,62 +24,39 @@ angular.module 'app'
 
       sc.addRec = ()->
         if sc.receber.valor != 0
-          if sc.receber.juros > 0
-            composicao = 
-              titulo: 'Juros'
-              valor: sc.receber.juros
-              cobranca_id: sc.receber.cobranca_id
-
-            ComposicaoResource.save composicao,
-              (data)->
-                sc.cobranca.composicaoCobranca.push data
-              (response)->
-
-          if sc.receber.multa > 0
-            composicao = 
-              titulo: 'Multa'
-              valor: sc.receber.multa
-              cobranca_id: sc.receber.cobranca_id
-
-            ComposicaoResource.save composicao,
-              (data)->
-                sc.cobranca.composicaoCobranca.push data
-              (response)->
-
+          sc.receber.carregando = true
           RecebimentoResource.save sc.receber,
             (data)->
+              sc.receber.carregando = false
               sc.cobranca.recebimentos.push data.recebimento
-              sc.cobranca.totais.recebimentos = data.totais.recebimentos
-              sc.cobranca.totais.composicao = data.totais.composicao
+              sc.cobranca.totais = data.totais
               sc.cobranca.divida_cobranca = data.divida_cobranca
               resetReceb()
             (response)->
+              sc.receber.carregando = false
       
-      sc.$watch 'receber.data', ()->
-        atualizaJurosMulta()
-      sc.$watch 'receber.valor', ()->
-        atualizaJurosMulta()
-      sc.$watch 'receber.juros', ()->
-        atualizaJurosMulta()
-      sc.$watch 'receber.multa', ()->
-        atualizaJurosMulta()
-        
-      atualizaJurosMulta = ()->
-        sc.receber.divida_cobranca = sc.cobranca.divida_cobranca
-        ReceberResource.jurosMulta sc.receber,
-          (data)->
-            sc.receber.juros = data.juros
-            sc.receber.multa = data.multa
-            sc.receber.divida_cobranca = data.divida_cobranca
-          (response)->
+      sc.calcularSemJurosMulta = ->
+        sc.receber.juros = null
+        sc.receber.multa = null
+        sc.calcularComJurosMulta()
+      
+      sc.calcularComJurosMulta = ()->
+        sc.receber.data = null
+        $timeout ->
+          ReceberResource.calcular_divida sc.receber,
+            (data)->
+              sc.receber.juros = data.juros
+              sc.receber.multa = data.multa
+              sc.receber.divida_cobranca = data.divida_cobranca
+            (response)->
+        , 500
 
       sc.deleteReceb = (item, index)->
         RecebimentoResource.delete
           id: item.id,
           (data)->
             sc.cobranca.recebimentos.splice index, 1
-            sc.cobranca.totais.recebimentos = data.totais.recebimentos
-            sc.cobranca.totais.composicao = data.totais.composicao
+            sc.cobranca.totais = data.totais
             sc.cobranca.divida_cobranca = data.divida_cobranca
           (response)->
 

@@ -37,31 +37,26 @@ class RecebimentosController < ApplicationController
     end
   end
 
-  def jurosMulta
+  def calcular_divida
     cobranca = Cobranca.where(id: params[:cobranca_id]).first
-    if params[:data].present?
-      if cobranca.recebimentos.count == 0
-        diferenca_data = (params[:data].to_date  - cobranca.vencimento.to_date)
-        multa = diferenca_data != 0 ? (cobranca.valor * (cobranca.multa/100)) : 0
-      else
-        diferenca_data = (params[:data].to_date - cobranca.recebimentos.last.data.to_date)
-        multa = 0
-      end
+    juros, multa, data, valor = params.values_at(:juros, :multa, :data, :valor)
+    data  = data.try(:to_date)
+    valor = valor || 0
+    if data
+      data_calculo = cobranca.recebimentos.any? ? cobranca.recebimentos.last.data : cobranca.vencimento
       divida = cobranca.divida
-      if divida != 0
-        juros = divida * (cobranca.juros/100) * diferenca_data
-        valor = divida
-      else
-        juros = cobranca.valor * (cobranca.juros/100) * diferenca_data
-        valor = cobranca.valor
-      end
+      diferenca_data = data - data_calculo
+      juros = 0
+      juros = divida * (cobranca.juros/100) * diferenca_data if diferenca_data > 0
+      multa  = data > cobranca.vencimento ? divida * (cobranca.multa/100) : 0
     else
-      juros = multa = 0
-      valor = params[:valor]
+      juros = juros || 0
+      multa = multa || 0
+      divida_cobranca = 0
     end
-    juros = 0 if juros < 0
-    multa = 0 if multa < 0
-    divida_cobranca = valor + juros + multa - params[:valor]
+
+    divida_cobranca = divida + juros + multa - valor if divida
+
     render json: {
       juros: juros.round(2),
       multa: multa.round(2),
