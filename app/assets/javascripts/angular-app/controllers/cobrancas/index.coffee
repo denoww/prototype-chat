@@ -24,10 +24,33 @@ angular.module 'app'
 
       sc.addRec = ()->
         if sc.receber.valor != 0
+          if sc.receber.juros > 0
+            composicao = 
+              titulo: 'Juros'
+              valor: sc.receber.juros
+              cobranca_id: sc.receber.cobranca_id
+
+            ComposicaoResource.save composicao,
+              (data)->
+                sc.cobranca.composicaoCobranca.push data
+              (response)->
+
+          if sc.receber.multa > 0
+            composicao = 
+              titulo: 'Multa'
+              valor: sc.receber.multa
+              cobranca_id: sc.receber.cobranca_id
+
+            ComposicaoResource.save composicao,
+              (data)->
+                sc.cobranca.composicaoCobranca.push data
+              (response)->
+
           RecebimentoResource.save sc.receber,
             (data)->
               sc.cobranca.recebimentos.push data.recebimento
-              sc.cobranca.totais.recebimentos += data.recebimento.valor
+              sc.cobranca.totais.recebimentos = data.totais.recebimentos
+              sc.cobranca.totais.composicao = data.totais.composicao
               sc.cobranca.divida_cobranca = data.divida_cobranca
               resetReceb()
             (response)->
@@ -55,7 +78,8 @@ angular.module 'app'
           id: item.id,
           (data)->
             sc.cobranca.recebimentos.splice index, 1
-            sc.cobranca.totais.recebimentos -= data.recebimento.valor
+            sc.cobranca.totais.recebimentos = data.totais.recebimentos
+            sc.cobranca.totais.composicao = data.totais.composicao
             sc.cobranca.divida_cobranca = data.divida_cobranca
           (response)->
 
