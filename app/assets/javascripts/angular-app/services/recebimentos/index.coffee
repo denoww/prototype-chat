@@ -4,6 +4,6 @@ angular.module 'app'
     ($resource)->
       return $resource '/recebimentos/:id.json', 
         id: '@id',
-          'save':     method: 'POST'
+          'save':       method: 'POST'
           'delete':     method: 'DELETE'
   ]
