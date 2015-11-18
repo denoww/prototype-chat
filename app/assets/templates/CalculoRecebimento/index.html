@@ -5,7 +5,7 @@
 <section id="corpo">
   <section id="receber" style="width: 50%" class="pull-left">
     <div class="sc-m-t-lg">
-      <p class="sc-text-gray">Receber</p>
+      <p class="sc-text-gray">Receber <span ng-show="receber.calculando"><i class="sc-icon sc-icon-carregando-2 sc-icon-spin"></i></span></p>
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
         <label>
           <div class="sc-label">Valor</div>
@@ -38,7 +38,7 @@
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-m-t-lg">
         <button ng-click="addRec()" class="sc-btn sc-btn-blue">
-          <span ng-show="receber.carregando">
+          <span ng-show="receber.salvando">
             <i class="sc-icon sc-icon-carregando-2 sc-icon-spin"></i>
             Recebendo
           </span>

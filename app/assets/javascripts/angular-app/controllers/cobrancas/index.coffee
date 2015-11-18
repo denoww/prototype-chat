@@ -24,32 +24,38 @@ angular.module 'app'
 
       sc.addRec = ()->
         if sc.receber.valor != 0
-          sc.receber.carregando = true
+          sc.receber.salvando = true
           RecebimentoResource.save sc.receber,
             (data)->
-              sc.receber.carregando = false
+              sc.receber.salvando = false
               sc.cobranca.recebimentos.push data.recebimento
               sc.cobranca.totais = data.totais
               sc.cobranca.divida_cobranca = data.divida_cobranca
               resetReceb()
             (response)->
-              sc.receber.carregando = false
+              sc.receber.salvando = false
       
       sc.calcularSemJurosMulta = ->
         sc.receber.juros = null
         sc.receber.multa = null
-        sc.calcularComJurosMulta()
+        calcular()
       
       sc.calcularComJurosMulta = ()->
-        sc.receber.data = null
         $timeout ->
-          ReceberResource.calcular_divida sc.receber,
-            (data)->
-              sc.receber.juros = data.juros
-              sc.receber.multa = data.multa
-              sc.receber.divida_cobranca = data.divida_cobranca
-            (response)->
+          sc.receber.data = null
+          calcular()
         , 500
+
+      calcular = ()->
+        sc.receber.calculando = true
+        ReceberResource.calcular_divida sc.receber,
+          (data)->
+            sc.receber.calculando = false
+            sc.receber.juros = data.juros
+            sc.receber.multa = data.multa
+            sc.receber.divida_cobranca = data.divida_cobranca
+          (response)->
+            sc.receber.calculando = false
 
       sc.deleteReceb = (item, index)->
         RecebimentoResource.delete
