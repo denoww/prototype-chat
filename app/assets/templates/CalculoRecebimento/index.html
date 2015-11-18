@@ -33,7 +33,7 @@
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
         <label>
           <div class="sc-label">Dívida</div>
-          <div class="sc-p-md">{{receber.divida_cobranca || 0 | currency}}</div>
+          <div class="sc-p-md">{{receber.divida_cobranca || receber.pagamentoMaior | currency}}</div>
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-m-t-lg">
@@ -71,6 +71,7 @@
               <p><span class="sc-text-gray">Juros: </span><span class="sc-text-blue">{{cobranca.juros}} %</span></p>
               <p><span class="sc-text-gray">Multa: </span><span class="sc-text-blue">{{cobranca.multa}} %</span></p>
             </div>
+
             <div class="sc-m-t-lg">
               <table style="width:100%" class="sc-table">
                 <thead>
@@ -86,14 +87,6 @@
                        - {{item.titulo}}</td>
                     <td class="align-right">{{item.valor | currency}}</td>
                   </tr>
-                  <tr ng-show="cobranca.totais.juros > 0" id="juros">
-                    <td>Juros</td>
-                    <td class="align-right">{{cobranca.totais.juros | currency}}</td>
-                  </tr>
-                  <tr ng-show="cobranca.totais.multa > 0" id="Multa">
-                    <td>Multa</td>
-                    <td class="align-right">{{cobranca.totais.multa | currency}}</td>
-                  </tr>
                 </tbody>
                 <thead>
                   <tr>
@@ -103,6 +96,51 @@
                 </thead>
               </table>
             </div>
+            
+            <div class="sc-m-t-lg" ng-show="cobranca.totais.juros > 0 || cobranca.totais.multa > 0">
+              <table style="width:100%" class="sc-table">
+                <thead>
+                  <tr>
+                    <td>Encargos</td>
+                    <td class="align-right">Valor</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="juros">
+                    <td>Juros</td>
+                    <td class="align-right">{{cobranca.totais.juros | currency}}</td>
+                  </tr>
+                  <tr id="Multa">
+                    <td>Multa</td>
+                    <td class="align-right">{{cobranca.totais.multa | currency}}</td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <td> </td>
+                    <td class="align-right">Total: {{cobranca.totais.jurosMulta | currency}}</td>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            
+            <div class="sc-m-t-lg" ng-show="cobranca.totais.pagamentoMaior > 0">
+              <table style="width:100%" class="sc-table">
+                <thead>
+                  <tr>
+                    <td>Encargos</td>
+                    <td class="align-right">Valor</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="maior">
+                    <td>Pagamento a maior</td>
+                    <td class="align-right">{{cobranca.totais.pagamentoMaior | currency}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
             <div class="sc-m-t-lg" ng-show="cobranca.recebimentos.length">
               <table style="width:100%" class="sc-table">
                 <thead>

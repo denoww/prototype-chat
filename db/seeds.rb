@@ -7,5 +7,5 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 Cobranca.create(valor: 95, juros: 0.03, multa: 2, atualizado: 0, vencimento: "2015-12-18")
-ComposicaoCobranca.create(titulo: "Multa", valor: 15, cobranca_id: 1)
-ComposicaoCobranca.create(titulo: "Multa 2", valor: 80, cobranca_id: 1)
+ComposicaoCobranca.create(titulo: "Taxa de Condomínio", valor: 15, cobranca_id: 1)
+ComposicaoCobranca.create(titulo: "Salão de festas", valor: 80, cobranca_id: 1)

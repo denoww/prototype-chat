@@ -30,6 +30,7 @@ angular.module 'app'
               sc.receber.salvando = false
               sc.cobranca.recebimentos.push data.recebimento
               sc.cobranca.totais = data.totais
+              sc.cobranca.pagamentoMaior = data.pagamentoMaior
               sc.cobranca.divida_cobranca = data.divida_cobranca
               resetReceb()
             (response)->
@@ -54,6 +55,7 @@ angular.module 'app'
             sc.receber.juros = data.juros
             sc.receber.multa = data.multa
             sc.receber.divida_cobranca = data.divida_cobranca
+            sc.receber.pagamentoMaior = data.pagamentoMaior
           (response)->
             sc.receber.calculando = false
 
@@ -64,6 +66,7 @@ angular.module 'app'
             sc.cobranca.recebimentos.splice index, 1
             sc.cobranca.totais = data.totais
             sc.cobranca.divida_cobranca = data.divida_cobranca
+            sc.cobranca.pagamentoMaior = data.pagamentoMaior
           (response)->
 
 ]
