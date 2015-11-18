@@ -2,7 +2,7 @@ angular.module 'app'
   .factory 'ReceberResource', [
     '$resource'
     ($resource)->
-      return $resource '/recebimentos/receber.json', 
+      return $resource '/recebimentos/calcular_divida.json', 
         {},
-          'jurosMulta': method: 'POST'
+          'calcular_divida': method: 'POST'
   ]
