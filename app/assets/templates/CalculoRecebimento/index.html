@@ -67,40 +67,39 @@
               <table style="width:100%" class="sc-table">
                 <thead>
                   <tr>
-                    <td>Data</td>
                     <td>Composição da Cobrança</td>
-                    <td class="align-center">Valor</td>
+                    <td class="align-right">Valor</td>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="item in cobranca.composicaoCobranca">
-                    <td>{{item.created_at | date}}</td>
-                    <td>{{item.titulo}}</td>
-                    <td class="align-center">{{item.valor | currency}}</td>
+                    <td>
+                      <span class="sc-text-gray">{{item.created_at | date}}</span>
+                       - {{item.titulo}}</td>
+                    <td class="align-right">{{item.valor | currency}}</td>
                   </tr>
                 </tbody>
                 <thead>
                   <tr>
                     <td> </td>
-                    <td> </td>
-                    <td class="align-center">Total: {{cobranca.totais.composicao | currency}}</td>
+                    <td class="align-right">Total: {{cobranca.totais.composicao | currency}}</td>
                   </tr>
                 </thead>
               </table>
             </div>
-            <div class="sc-m-t-lg">
+            <div class="sc-m-t-lg" ng-show="cobranca.recebimentos.length">
               <table style="width:100%" class="sc-table">
                 <thead>
                   <tr>
                     <td>Recebimento</td>
-                    <td class="align-center">Valor</td>
-                    <td>Ação</td>
+                    <td class="align-right">Valor</td>
+                    <td style="width: 3em"></td>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="item in cobranca.recebimentos">
                     <td>Data do pagamento: <span class="sc-text-blue">{{item.data | date}}</span></td>
-                    <td class="align-center">{{item.valor | currency}}</td>
+                    <td class="align-right">{{item.valor | currency}}</td>
                     <td><i ng-click="deleteReceb(item, $index)" class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red"></i></td>
                   </tr>
                   <tr ng-show="cobranca.length == 0">
@@ -111,7 +110,7 @@
                 <thead>
                   <tr>
                     <td> </td>
-                    <td class="align-center">Total: {{cobranca.totais.recebimentos | currency}}</td>
+                    <td class="align-right">Total: {{cobranca.totais.recebimentos | currency}}</td>
                     <td> </td>
                   </tr>
                 </thead>
