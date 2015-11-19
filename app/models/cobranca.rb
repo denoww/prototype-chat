@@ -23,7 +23,7 @@ class Cobranca < ActiveRecord::Base
     multa = recebimentos.sum(:multa)
     recebimento = recebimentos.sum(:valor)
     pagamentoMaior = composicao + juros + multa - recebimento
-    pagamentoMaior = 0 if pagamentoMaior == valor
+    pagamentoMaior = 0 if pagamentoMaior > 0
     return {
       composicao: composicao,
       recebimentos: recebimento,
