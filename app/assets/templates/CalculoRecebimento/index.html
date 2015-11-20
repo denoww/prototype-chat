@@ -7,21 +7,21 @@
     <div class="sc-m-t-lg">
       <p class="sc-text-gray">Receber <span ng-show="receber.calculando"><i class="sc-icon sc-icon-carregando-2 sc-icon-spin"></i></span></p>
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
-        <label ng-class="{'sc-cursor-not-allowed':cobranca.totais.pagamentoMaior != 0}">
-          <div ng-class="{'sc-text-gray':cobranca.totais.pagamentoMaior != 0}" class="sc-label">Valor</div>
-          <input type='text' ng-keyup="calcularSemJurosMulta()" ng-disabled="cobranca.totais.pagamentoMaior != 0" sc-currency-input="sc-currency-input" ng-model="receber.valor" class="sc-input-default"/>
+        <label ng-class="{'sc-cursor-not-allowed':cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0}">
+          <div ng-class="{'sc-text-gray':cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0}" class="sc-label">Valor</div>
+          <input type='text' ng-keyup="calcularSemJurosMulta()" ng-disabled="cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0" sc-currency-input="sc-currency-input" ng-model="receber.valor" class="sc-input-default"/>
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
-        <label ng-class="{'sc-cursor-not-allowed':cobranca.totais.pagamentoMaior != 0}">
-          <div ng-class="{'sc-text-gray':cobranca.totais.pagamentoMaior != 0}" class="sc-label">Data</div>
-          <input sc-currency-data="sc-currency-data" ng-disabled="cobranca.totais.pagamentoMaior != 0" type="date" ng-change="calcularSemJurosMulta()" ng-model="receber.data" class="sc-input-default"/>
+        <label ng-class="{'sc-cursor-not-allowed':cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0}">
+          <div ng-class="{'sc-text-gray':cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0}" class="sc-label">Data</div>
+          <input sc-currency-data="sc-currency-data" ng-disabled="cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0" type="date" ng-change="calcularSemJurosMulta()" ng-model="receber.data" class="sc-input-default"/>
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
-        <label ng-class="{'sc-cursor-not-allowed':cobranca.totais.pagamentoMaior != 0}">
-          <div ng-class="{'sc-text-gray':cobranca.totais.pagamentoMaior != 0}" class="sc-label">Juros</div>
-          <input ng-keyup="calcularComJurosMulta()" ng-disabled="cobranca.totais.pagamentoMaior != 0" sc-currency-input="sc-currency-input" ng-model="receber.juros" class="sc-input-default"/>
+        <label ng-class="{'sc-cursor-not-allowed':cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0}">
+          <div ng-class="{'sc-text-gray':cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0}" class="sc-label">Juros</div>
+          <input ng-keyup="calcularComJurosMulta()" ng-disabled="cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0" sc-currency-input="sc-currency-input" ng-model="receber.juros" class="sc-input-default"/>
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
@@ -37,7 +37,7 @@
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-m-t-lg">
-        <button ng-click="addRec()" class="sc-btn" ng-disable="cobranca.totais.pagamentoMaior != 0" ng-class="cobranca.totais.pagamentoMaior != 0 ? 'sc-cursor-not-allowed sc-btn-gray' : 'sc-btn-blue'">
+        <button ng-click="addRec()" class="sc-btn" ng-disable="cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0" ng-class="cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0 ? 'sc-cursor-not-allowed sc-btn-gray' : 'sc-btn-blue'">
           <span ng-show="receber.salvando">
             <i class="sc-icon sc-icon-carregando-2 sc-icon-spin"></i>
             Recebendo
@@ -49,7 +49,7 @@
       </div>
     </div>
   </section>
-  
+
   <section id="listing">
     <ul class="sc-accordion">
       <li class="sc-acc-gray-light">
@@ -96,7 +96,7 @@
                 </thead>
               </table>
             </div>
-            
+
             <div class="sc-m-t-lg" ng-show="cobranca.totais.juros > 0 || cobranca.totais.multa > 0">
               <table style="width:100%" class="sc-table">
                 <thead>
@@ -123,7 +123,7 @@
                 </thead>
               </table>
             </div>
-            
+
             <div class="sc-m-t-lg" ng-show="cobranca.totais.pagamentoMaior > 0">
               <table style="width:100%" class="sc-table">
                 <thead>
@@ -140,7 +140,7 @@
                 </tbody>
               </table>
             </div>
-            
+
             <div class="sc-m-t-lg" ng-show="cobranca.recebimentos.length">
               <table style="width:100%" class="sc-table">
                 <thead>

@@ -7,9 +7,11 @@ class RecebimentosController < ApplicationController
     cobranca = recebimento.cobranca
     if cobranca
       if recebimento.save
+        divida = cobranca.divida
+        divida = params[:divida_cobranca] if params[:divida_cobranca]
         render json: {
           recebimento: recebimento,
-          divida_cobranca: cobranca.divida,
+          divida_cobranca: divida,
           totais: cobranca.getTotais
         }
       else
@@ -44,16 +46,24 @@ class RecebimentosController < ApplicationController
     valor ||= 0
     juros ||= 0
     multa ||= 0
-    divida_cobranca = 0
-    if data
-      data_calculo = cobranca.recebimentos.any? ? cobranca.recebimentos.last.data : cobranca.vencimento
-      divida = cobranca.divida
-      diferenca_data = data - data_calculo
-      juros = divida * (cobranca.juros/100) * diferenca_data if diferenca_data > 0
-      multa = divida * (cobranca.multa/100) if data > cobranca.vencimento
+    divida_cobranca = juros_atual = multa_atual = 0
+    ultimo_recebimento = cobranca.recebimentos.last
+    valor_base = cobranca.valor
+    if cobranca.recebimentos.any?
+      juros_atual = ultimo_recebimento.juros_atual
+      multa_atual = ultimo_recebimento.multa_atual
+      valor_base = ultimo_recebimento.valor_base
     end
 
-    divida_cobranca = divida + juros + multa - valor if divida
+    if data
+      data_calculo = cobranca.recebimentos.any? ? ultimo_recebimento.data : cobranca.vencimento
+      diferenca_data = data - data_calculo
+      juros = valor_base * (cobranca.juros/100) * diferenca_data
+      multa = cobranca.valor * (cobranca.multa/100) if cobranca.recebimentos.empty?
+    end
+
+    juros += juros_atual if juros_atual > 0
+    multa = multa_atual if multa_atual > 0
 
     pagamentoMaior = 0
     if divida_cobranca < 0
@@ -61,11 +71,27 @@ class RecebimentosController < ApplicationController
       divida_cobranca = 0
     end
 
+    divida_cobranca = valor_base + juros + multa - valor
+
+    if (juros+multa) > valor
+      multa_atual = multa - (valor - juros)
+      if juros > valor
+        juros_atual = juros - valor
+        multa_atual = multa
+      end
+    else
+      juros_atual = multa_atual = 0
+      valor_base = divida_cobranca
+    end
+
     render json: {
       juros: juros.round(2),
       multa: multa.round(2),
       divida_cobranca: divida_cobranca.round(2),
-      pagamentoMaior: pagamentoMaior.round(2)
+      pagamentoMaior: pagamentoMaior.round(2),
+      juros_atual: juros_atual.round(2),
+      multa_atual: multa_atual.round(2),
+      valor_base: valor_base.round(2)
     }
   end
 
@@ -73,7 +99,7 @@ class RecebimentosController < ApplicationController
 
   def recebimento_param
     if params[:recebimento].present?
-      params.require(:recebimento).permit(:valor, :juros, :multa, :data, :cobranca_id)
+      params.require(:recebimento).permit(:valor, :juros, :multa, :data, :valor_base, :juros_atual, :multa_atual, :cobranca_id)
     else
       {}
     end

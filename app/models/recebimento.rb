@@ -11,6 +11,9 @@ class Recebimento < ActiveRecord::Base
       juros: juros,
       multa: multa,
       data: data,
+      juros_atual: juros_atual,
+      multa_atual: multa_atual,
+      valor_base: valor_base,
       cobranca_id: cobranca_id
     }
   end
