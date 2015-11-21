@@ -1,11 +1,14 @@
 angular.module 'app'
   .controller 'Cobranca::IndexCtrl', [
-    '$scope', '$timeout', '$filter', 'CobrancaResource', 'RecebimentoResource', 'ReceberResource'
-    (sc, $timeout, $filter, CobrancaResource, RecebimentoResource, ReceberResource)->
+    '$scope', '$timeout', '$filter', 'CobrancaResource', 'RecebimentoResource', 'ReceberResource', 'scTopMessages', 'scAlert'
+    (sc, $timeout, $filter, CobrancaResource, RecebimentoResource, ReceberResource, scTopMessages, scAlert)->
 
       idCobranca = 1
 
-      sc.cobranca = CobrancaResource.get id: idCobranca
+      sc.carregando = true
+      sc.cobranca = CobrancaResource.get {id: idCobranca},
+        (data)->
+          sc.carregando = false
 
       sc.receber =
         data: ''
@@ -31,8 +34,6 @@ angular.module 'app'
       sc.addRec = ()->
         if sc.receber.valor != 0
           sc.receber.salvando = true
-          console.log 'addRec'
-          console.log sc.receber
           RecebimentoResource.save sc.receber,
             (data)->
               sc.receber.salvando = false
@@ -41,6 +42,10 @@ angular.module 'app'
               sc.cobranca.pagamentoMaior = data.pagamentoMaior
               sc.cobranca.divida_cobranca = data.divida_cobranca
               resetReceb()
+              scTopMessages.openSuccess "Recebimento realizado com sucesso!"
+              $timeout ()->
+                scTopMessages.close()
+              , 5000
             (response)->
               sc.receber.salvando = false
 
@@ -57,8 +62,6 @@ angular.module 'app'
 
       calcular = ()->
         sc.receber.calculando = true
-        console.log 'calcular'
-        console.log sc.receber
         ReceberResource.calcular_divida sc.receber,
           (data)->
             sc.receber.calculando = false
@@ -73,13 +76,31 @@ angular.module 'app'
             sc.receber.calculando = false
 
       sc.deleteReceb = (item, index)->
-        RecebimentoResource.delete
-          id: item.id,
-          (data)->
-            sc.cobranca.recebimentos.splice index, 1
-            sc.cobranca.totais = data.totais
-            sc.cobranca.divida_cobranca = data.divida_cobranca
-            sc.cobranca.pagamentoMaior = data.pagamentoMaior
+        scAlert.open
+          title: 'Você tem certeza?'
+          messages: 'Você não será capaz de recuperar esse registro!'
+          buttons: [
+            {
+              label: 'Cancelar'
+              color: 'gray'
+            }
+            {
+              label: 'Excluír'
+              color: 'red'
+              action: ()->
+                RecebimentoResource.delete
+                  id: item.id,
+                  (data)->
+                    sc.cobranca.recebimentos.splice index, 1
+                    sc.cobranca.totais = data.totais
+                    sc.cobranca.divida_cobranca = data.divida_cobranca
+                    sc.cobranca.pagamentoMaior = data.pagamentoMaior
+                    scTopMessages.openDanger "Recebimento excluido com sucesso!"
+                    $timeout ()->
+                      scTopMessages.close()
+                    , 5000
+            }
+          ]
           (response)->
 
 ]

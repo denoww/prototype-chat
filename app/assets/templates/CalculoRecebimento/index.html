@@ -38,12 +38,9 @@
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-m-t-lg">
         <button ng-click="addRec()" class="sc-btn" ng-disable="cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0" ng-class="cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0 ? 'sc-cursor-not-allowed sc-btn-gray' : 'sc-btn-blue'">
-          <span ng-show="receber.salvando">
-            <i class="sc-icon sc-icon-carregando-2 sc-icon-spin"></i>
-            Recebendo
-          </span>
-          <span ng-hide="receber.salvando">
-            Receber
+          <span>
+            <i ng-show="receber.salvando" class="sc-icon sc-icon-carregando-2 sc-icon-spin"></i>
+            {{ receber.salvando ? 'Recebendo' : 'Receber'}}
           </span>
         </button>
       </div>
@@ -57,7 +54,7 @@
           <div class="sc-accordion-elastic-col title"><span>Fulano de tal - referente a Nov/2015</span><span class="description">Pagador: Fulano de tal</span></div>
           <div class="sc-accordion-col-12 align-right">
             <div class="sc-text-bold">{{cobranca.valor |currency}}</div>
-            <span ng-show="cobranca.divida_cobranca != cobranca.valor" class="description">Atualizado {{cobranca.divida_cobranca | currency}} </span>
+            <span ng-show="cobranca.divida_cobranca != cobranca.valor && cobranca.divida_cobranca > 0" class="description">Atualizado {{cobranca.divida_cobranca | currency}} </span>
           </div>
         </div>
         <div style="background: none;" class="sc-accordion-body ng-animation-slider">

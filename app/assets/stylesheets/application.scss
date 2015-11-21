@@ -1,0 +1,122 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ * require_tree .
+ *  require_self
+ */
+#box-body-loading {
+  .top1, .top2, .bottom1, .bottom2 {
+    opacity: 0;
+    visibility: hidden;
+    width: 0%;
+    height: 0%;
+    background: rgba(0,0,0,.1);
+    transition-duration: 500ms;
+  }
+
+  .top1 {
+    top: 0;
+    left: 0;
+  }
+
+  .top2 {
+    top: 0;
+    right: 0;
+  }
+
+  .bottom1 {
+    bottom: 0;
+    left: 0;
+  }
+
+  .bottom2 {
+    bottom: 0;
+    right: 0;
+  }
+}
+
+#box-body-loading.active {
+  .top1, .top2, .bottom1, .bottom2 {
+    opacity: 1;
+    visibility: visible;
+    width: 50%;
+    height: 50%;
+    background: rgba(0,0,0,.4);
+    position: fixed;
+  }
+  body {
+    overflow: hidden;
+  }
+}
+
+.sc-loading {
+    position: fixed;
+    z-index: 999999;
+    top: 50%;
+    left: 50%;
+    font-size: 1.5em;
+    width: auto;
+    padding: 1em 1.3em;
+    text-align: center;
+    background-color: rgba(202,226,246,0.95);
+    color: #337ab7;
+    border-radius: .3em;
+    opacity: 0;
+    cursor: wait;
+    visibility: hidden;
+    -webkit-box-shadow: 0.01em 0.06em 0.2em rgba(0,0,0,0.2);
+    -moz-box-shadow: 0.01em 0.06em 0.2em rgba(0,0,0,0.2);
+    box-shadow: 0.01em 0.06em 0.2em rgba(0,0,0,0.2);
+    -webkit-transform: translate(-50%, -100%);
+    -moz-transform: translate(-50%, -100%);
+    -ms-transform: translate(-50%, -100%);
+    -o-transform: translate(-50%, -100%);
+    transform: translate(-50%, -100%);
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s
+}
+
+.sc-loading.active {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+
+.sc-loading-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 98;
+    cursor: wait;
+    opacity: 0;
+    background-color: rgba(0,0,0,0.15);
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s
+}
+
+.sc-loading-bg.active {
+    opacity: 1
+}
+
+body.menu-opened .sc-loading {
+    left: calc(50% + 5.41667em)
+}

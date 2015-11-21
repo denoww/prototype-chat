@@ -17,7 +17,26 @@ angular.module 'app', [
     $locationProvider.html5Mode true
 ]
 
+.run [
+  '$rootScope', 'scAlert', 'scTopMessages'
+  ($rootScope, scAlert, scTopMessages)->
+    $rootScope.scAlert = scAlert
+    $rootScope.scTopMessages = scTopMessages
+]
+
 .controller 'controll', [
   '$scope', '$filter'
   (sc, $filter)->
 ]
+
+$(window).load ()->
+  setTimeout ()->
+    $('#body-loading').removeClass('active')
+  , 500
+  setTimeout ()->
+    $('#box-body-loading').removeClass('active')
+  , 800
+
+$(document).ready ()->
+  $('#body-loading').addClass('active')
+  $('#box-body-loading').addClass('active')

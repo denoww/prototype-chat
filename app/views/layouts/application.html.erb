@@ -13,5 +13,41 @@
 
     <div ng-view></div>
 
+    <!-- Loagding Page -->
+    <div id="box-body-loading">
+      <div id="body-loading" class="sc-loading ng-animation-slider">
+        <i class="sc-icon sc-icon-carregando-1 sc-icon-spin"></i> Carregando
+      </div>
+      <div class="top1"></div>
+      <div class="top2"></div>
+      <div class="bottom1"></div>
+      <div class="bottom2"></div>
+    </div>
+
+    <!-- scAlert -->
+    <div ng-cloak class="sc-alert ng-cloak" ng-show="scAlert.toggler.opened" ng-class="{'active': scAlert.toggler.opened}">
+      <div class="sc-alert-box">
+        <h2 class="sc-alert-title">{{scAlert.title}}</h2>
+        <div class="sc-alert-messages" ng-show="scAlert.messages.length">
+          <p ng-repeat="msg in scAlert.messages track by $index">{{msg}}</p>
+        </div>
+        <div class="sc-alert-buttons">
+          <button ng-repeat="btn in scAlert.buttons" class="sc-btn sc-btn-{{btn.color}} sc-btn-block-only-xs" ng-click="scAlert.btnAction(btn)" type="button">{{btn.label}}</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- scTopMessages -->
+    <div ng-click="scTopMessages.close()" ng-cloak class="sc-top-messages ng-cloak ng-animation-slider" ng-show="scTopMessages.toggler.opened">
+      <div class="sc-text-white align-center sc-text-shadow-dark flex align-items-center {{scTopMessages.theme}}">
+        <div class="sc-top-messages-msgs sc-cursor-default">
+          <p ng-repeat="msg in scTopMessages.messages track by $index">{{msg}}</p>
+        </div>
+        <div class="sc-top-messages-close-button">
+          <i class='sc-icon sc-icon-fechar-1 sc-cursor-pointer'></i>
+        </div>
+      </div>
+    </div>
+
   </body>
 </html>
