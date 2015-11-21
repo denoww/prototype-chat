@@ -9,6 +9,9 @@ angular.module 'app'
       sc.cobranca = CobrancaResource.get {id: idCobranca},
         (data)->
           sc.carregando = false
+        (response)->
+          scTopMessages.openDanger "Houve algum erro na busca da cobrança, contate ao Suporte se percistir!"
+
 
       sc.receber =
         data: ''
