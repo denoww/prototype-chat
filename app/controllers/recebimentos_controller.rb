@@ -41,56 +41,52 @@ class RecebimentosController < ApplicationController
 
   def calcular_divida
     cobranca = Cobranca.where(id: params[:cobranca_id]).first
-    juros, multa, data, valor = params.values_at(:juros, :multa, :data, :valor)
-    data  = data.try(:to_date)
-    valor ||= 0
-    juros ||= 0
-    multa ||= 0
-    divida_cobranca = juros_atual = multa_atual = 0
-    ultimo_recebimento = cobranca.recebimentos.last
-    valor_base = cobranca.valor
+    data, valor = params.values_at(:data, :valor)
+    pagamentoMaior = juros_atual = multa_atual = 0
+    valor                 ||= 0
+    data                  = data.try(:to_date)
+    valor_base            = cobranca.valor
+    data_calculo          = cobranca.vencimento
+
     if cobranca.recebimentos.any?
-      juros_atual = ultimo_recebimento.juros_atual
-      multa_atual = ultimo_recebimento.multa_atual
-      valor_base = ultimo_recebimento.valor_base
+      ultimo_recebimento  = cobranca.recebimentos.last
+      juros_atual         = ultimo_recebimento.juros_atual
+      multa_atual         = ultimo_recebimento.multa_atual
+      valor_base          = ultimo_recebimento.valor_base
+      data_calculo        = ultimo_recebimento.data
     end
 
-    if data
-      data_calculo = cobranca.recebimentos.any? ? ultimo_recebimento.data : cobranca.vencimento
-      diferenca_data = data - data_calculo
-      juros = valor_base * (cobranca.juros/100) * diferenca_data
-      multa = cobranca.valor * (cobranca.multa/100) if cobranca.recebimentos.empty?
-    end
+    diferenca_data        =  data ? (data - data_calculo) : 0
 
-    juros += juros_atual if juros_atual > 0
-    multa = multa_atual if multa_atual > 0
+    juros = calcular_juros(
+      {valor_base: valor_base, diferenca_data: diferenca_data, juros_atual: juros_atual},
+      cobranca
+    )
 
-    pagamentoMaior = 0
-    if divida_cobranca < 0
-      pagamentoMaior = divida_cobranca
-      divida_cobranca = 0
-    end
+    multa = calcular_multa(
+      {valor_base: valor_base, diferenca_data: diferenca_data, multa_atual: multa_atual},
+      cobranca
+    )
 
-    divida_cobranca = valor_base + juros + multa - valor
+    divida_cobranca = calcular_dCobranca(
+      {valor_base: valor_base, juros: juros, multa: multa, valor: valor}
+    )
 
-    if (juros+multa) > valor
-      multa_atual = multa - (valor - juros)
-      if juros > valor
-        juros_atual = juros - valor
-        multa_atual = multa
-      end
-    else
-      juros_atual = multa_atual = 0
-      valor_base = divida_cobranca
-    end
+    encargoAtual = jurosMultaAtual(
+      {juros: juros, multa: multa, valor: valor, divida_cobranca: divida_cobranca}
+    )
+
+    valor_base = divida_cobranca unless (juros+multa) > valor
+    pagamentoMaior = divida_cobranca if divida_cobranca < 0
+    divida_cobranca = (divida_cobranca - pagamentoMaior)
 
     render json: {
       juros: juros.round(2),
       multa: multa.round(2),
       divida_cobranca: divida_cobranca.round(2),
       pagamentoMaior: pagamentoMaior.round(2),
-      juros_atual: juros_atual.round(2),
-      multa_atual: multa_atual.round(2),
+      juros_atual: encargoAtual[:juros_atual].round(2),
+      multa_atual: encargoAtual[:multa_atual].round(2),
       valor_base: valor_base.round(2)
     }
   end
@@ -103,6 +99,45 @@ class RecebimentosController < ApplicationController
     else
       {}
     end
+  end
+
+  private
+
+  def jurosMultaAtual(obj)
+    if (obj[:juros] + obj[:multa]) > obj[:valor]
+      multa_atual = obj[:multa] - (obj[:valor] - obj[:juros])
+      if obj[:juros] > obj[:valor]
+        juros_atual = obj[:juros] - obj[:valor]
+        multa_atual = obj[:multa]
+      end
+    end
+
+    return {
+      juros_atual: juros_atual || 0,
+      multa_atual: multa_atual || 0
+    }
+  end
+
+  def calcular_juros(obj, cobranca)
+    juros = params[:juros] || 0
+    if obj[:diferenca_data] > 0
+      juros = obj[:valor_base] * (cobranca.juros/100) * obj[:diferenca_data]
+      juros += obj[:juros_atual] if obj[:juros_atual] > 0
+    end
+    return juros
+  end
+
+  def calcular_multa(obj, cobranca)
+     if obj[:diferenca_data] > 0
+      multa = obj[:valor_base] * (cobranca.multa/100) if cobranca.recebimentos.empty?
+      multa = obj[:multa_atual] if obj[:multa_atual] > 0
+    end
+    return multa || params[:multa] || 0
+  end
+
+  def calcular_dCobranca(obj)
+    divida_cobranca = obj[:valor_base] + obj[:juros] + obj[:multa] - obj[:valor]
+    return divida_cobranca
   end
 
 end
