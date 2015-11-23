@@ -12,7 +12,6 @@ angular.module 'app'
         (response)->
           scTopMessages.openDanger "Houve algum erro na busca da cobrança, contate ao Suporte se percistir!"
 
-
       sc.receber =
         data: ''
         valor: 0
@@ -51,6 +50,15 @@ angular.module 'app'
               , 5000
             (response)->
               sc.receber.salvando = false
+              scAlert.open
+                title: 'Atenção!'
+                messages: response.data.errors
+                buttons: [
+                  {
+                    label: 'Ok'
+                    color: 'yellow'
+                  }
+                ]
 
       sc.calcularSemJurosMulta = ->
         sc.receber.juros = null
@@ -75,6 +83,8 @@ angular.module 'app'
             sc.receber.valor_base = data.valor_base
             sc.receber.divida_cobranca = data.divida_cobranca
             sc.receber.pagamentoMaior = data.pagamentoMaior
+            sc.receber.min_data = data.min_data
+            sc.receber.min_data_error = data.min_data_error
           (response)->
             sc.receber.calculando = false
 
