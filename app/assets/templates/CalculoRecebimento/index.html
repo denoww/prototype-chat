@@ -2,6 +2,10 @@
   <img src="https://www.seucondominio.com.br/assets/institucional/logo-mobile-c07a4de0cd57b02cf5eaffefcda8d48e.png"/>
 </section>
 
+<p ng-show="receber.min_data_error == -1" class="sc-text-sm sc-p-md sc-text-red sc-border-red-solid-md sc-m-md sc-bg-red-lighter sc-border-radius">
+  <i class="sc-icon sc-icon-exclamacao-3 sc-text-md"></i> Data não permitida (>= {{receber.min_data | date}})
+</p>
+
 <section id="corpo">
   <section id="receber" style="width: 50%" class="pull-left">
     <div class="sc-m-t-lg">
@@ -16,9 +20,6 @@
         <label ng-class="{'sc-cursor-not-allowed':cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0}">
           <div ng-class="{'sc-text-gray':cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0}" class="sc-label">Data</div>
           <input sc-currency-data="sc-currency-data" ng-disabled="cobranca.totais.pagamentoMaior != 0 || cobranca.divida_cobranca == 0" type="date" ng-change="calcularSemJurosMulta()" ng-model="receber.data" class="sc-input-default" ng-class="{'error':receber.min_data_error == -1}"/>
-          <p ng-show="receber.min_data_error == -1" class="sc-text-sm sc-text-red sc-m-v-md">
-            <i class="sc-icon sc-icon-exclamacao-3 sc-text-md"></i> Data não permitida (>= {{receber.min_data | date}})
-          </p>
         </label>
       </div>
       <div class="sc-p-l-md sc-p-b-md sc-align-bottom">
