@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
-  root 'cobrancas#index'
+  root 'historic#index'
 
-  resources :cobrancas
-  resources :recebimentos, only: [:create, :destroy] 
-  resources :composicao_cobrancas, only: [:create, :destroy] 
-  post '/recebimentos/calcular_divida', to: 'recebimentos#calcular_divida'
+  resources :historico, controller: :historic
 end

@@ -8,11 +8,11 @@ angular.module 'app', [
 
     $routeProvider
       .when '/',
-        templateUrl: "<%= asset_path("CalculoRecebimento/index") %>"
-        controller: 'Cobranca::IndexCtrl'
-      .when '/cobrancas',
-        templateUrl: "<%= asset_path("CalculoRecebimento/index") %>"
-        controller: 'Cobranca::IndexCtrl'
+        templateUrl: "<%= asset_path("Historic/index") %>"
+        controller: 'Contato::indexCtrl'
+      .when '/historico',
+        templateUrl: "<%= asset_path("Historic/index") %>"
+        controller: 'Contato::indexCtrl'
 
     $locationProvider.html5Mode true
 ]
@@ -25,18 +25,23 @@ angular.module 'app', [
 ]
 
 .controller 'controll', [
-  '$scope', '$filter'
-  (sc, $filter)->
+  '$scope', '$filter', '$timeout'
+  (sc, $filter, $timeout)->
+
+    sc.chatDef =
+      open: false
+      chat: false
+      fixed: false
+      suporte: true
+      usuario: false
+      adm: false
+      limit: 4
 ]
 
 $(window).load ()->
   setTimeout ()->
     $('#body-loading').removeClass('active')
   , 500
-  setTimeout ()->
-    $('#box-body-loading').removeClass('active')
-  , 800
 
 $(document).ready ()->
   $('#body-loading').addClass('active')
-  $('#box-body-loading').addClass('active')

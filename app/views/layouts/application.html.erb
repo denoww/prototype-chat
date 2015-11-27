@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Recebimentos</title>
+    <title>Seu Condominio</title>
     <base href="/">
     <link rel="stylesheet" type="text/css" href="http://staging.seucondominio.com.br/assets/prototype-b8672555b5fba00a6c848ccf5bcd466c.css">
+    <link rel="stylesheet" type="text/css" href="http://codepen.io/dev6-seucondominio/pen/gaXWjX.css">
     <%= stylesheet_link_tag    'application' %>
-    <%= javascript_include_tag 'application' %>
     <%= csrf_meta_tags %>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   </head>
   <body ng-app="app" ng-controller='controll'>
 
-    <div ng-view></div>
+    <ng-view></ng-view>
 
     <!-- Loagding Page -->
     <div id="box-body-loading">
       <div id="body-loading" class="sc-loading ng-animation-slider">
         <i class="sc-icon sc-icon-carregando-1 sc-icon-spin"></i> Carregando
       </div>
-      <div class="top1"></div>
-      <div class="top2"></div>
-      <div class="bottom1"></div>
-      <div class="bottom2"></div>
     </div>
 
     <!-- scAlert -->
@@ -49,5 +45,6 @@
       </div>
     </div>
 
+    <%= javascript_include_tag 'application' %>
   </body>
 </html>

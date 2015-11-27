@@ -1,0 +1,163 @@
+<section id="top-menu" class="sc-p-v-sm sc-p-h-xl sc-bg-blue">
+  <img style="width: 9em" src="https://www.seucondominio.com.br/assets/institucional/logo-mobile-c07a4de0cd57b02cf5eaffefcda8d48e.png">
+  <div ng-hide="chatDef.fixed" class="pull-right menu-icon">
+    <i ng-click="chatDef.open = !chatDef.open" class="sc-icon sc-icon-comentarios"></i>
+  </div>
+</section>
+
+<section id="top-bar" class="sc-bg-gray-lighter">
+  <div id="top-bar-content" class="sc-p-md sc-bg-gray-lighter" style="display: flex; align-items: center;">
+    <span class="sc-text-gray sc-m-r-lg">Histórico</span>
+    <div class="sc-align-bottom">
+      <label>
+        <div class="sc-input-group sc-text-sm">
+          <input class="sc-input-default" />
+          <button class="sc-btn sc-btn-gray" type="button"><i class="sc-icon sc-icon-filtro-2"></i></button>
+        </div>
+      </label>
+    </div>
+    <div class="sc-m-l-lg sc-align-bottom">
+      <label>
+        <div class="sc-btn-group sc-text-sm">
+          <button ng-click="chatDef.adm = false; chatDef.usuario = false; chatDef.suporte = true" class="sc-btn" ng-class="chatDef.suporte ? 'sc-btn-gray': 'sc-btn-blue'">Chat Suporte</button>
+          <button ng-click="chatDef.adm = false; chatDef.suporte = false; chatDef.usuario = true" class="sc-btn" ng-class="chatDef.usuario ? 'sc-btn-gray': 'sc-btn-blue'">Chat Usuario</button>
+          <button ng-click="chatDef.usuario = false; chatDef.suporte = false; chatDef.adm = true" class="sc-btn" ng-class="chatDef.adm ? 'sc-btn-gray': 'sc-btn-blue'">Chat Administrador</button>
+        </div>
+      </label>
+    </div>
+  </div>
+</section>
+
+<section ng-controller="Contato::indexCtrl">
+  <div ng-show="chatDef.open" id="chat" class="col-xs-12 col-sm-12 sc-p-none" ng-class="{'open':chatDef.open}">
+    <div class="chat-top">
+      <span sc-dropdown-menu class="sc-dropdown pull-right">
+        <span style="display: flex">
+          <i ng-click="menu.toggle()" class="sc-badge-hover-white sc-icon sc-icon-engrenagem" ng-class="{'sc-badge-active':menu.isOn}"></i>
+          <i ng-hide="chatDef.fixed" ng-click="chatDef.open = false" class="sc-badge-hover-white sc-icon sc-icon-fechar-1"></i>
+        </span>
+        <ul style="left: auto; right: 0" class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+          <li><a href="">Desativar Bate Papo</a></li>
+          <li><a href="">Ordenação</a></li>
+        </ul>
+      </span>
+      <div style="display: flex" class="busca-contato">
+        <i class="sc-icon sc-icon-lupa-2"></i>
+        <input placeholder="Buscar" />
+      </div>
+    </div>
+    <div style="height: 100%; overflow-y: auto" class="sc-scrollbar">
+      <div ng-hide="chatDef.suporte" class="chat-body"> <!-- Suporte (user/morador) -->
+        <hr class="sc-hr-white" style="margin-bottom: 0; border-top-color: rgba(255, 255, 255, 0.11); border-bottom-color: rgba(0, 0, 0, 0.14);">
+        <span style="position: relative; top: -0.7em; width: 3.9em; left: calc(50% - 2em); color: rgba(255, 255, 255, 0.29); background: #244560; padding: 0 0.2em;">Suporte</span>
+        <div class="bloco-lista">
+          <div ng-show="users.suporte.status" ng-click="openChat(users.suporte)" class="bloco-user">
+            <div class="photo">
+              <img style="width: 2.5em" ng-src="{{users.suporte.foto}}">
+            </div>
+            <div class="nome">
+              <div>
+                <span>{{users.suporte.nome}}</span>
+                <div class="subscript" ng-show="users.suporte.tipo_conta">{{users.suporte.tipo_conta}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-show="chatDef.suporte" class="chat-body"> <!-- Suporte -->
+        <hr class="sc-hr-white" style="margin-bottom: 0; border-top-color: rgba(255, 255, 255, 0.11); border-bottom-color: rgba(0, 0, 0, 0.14);">
+        <span style="position: relative; top: -0.7em; width: 3.9em; left: calc(50% - 2em); color: rgba(255, 255, 255, 0.29); background: #244560; padding: 0 0.2em;">Suporte</span>
+        <div class="bloco-lista">
+          <div ng-show="user.status" ng-click="openChat(user)" class="bloco-user" ng-repeat="user in users.suportes">
+            <div class="photo">
+              <img style="width: 2.9em;" ng-src="{{user.foto}}">
+            </div>
+            <div class="nome">
+              <div>
+                <span>{{user.nome}}</span>
+                <div class="subscript" ng-show="user.tipo_conta">{{user.tipo_conta}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-hide="chatDef.suporte" class="chat-body"> <!-- Administração -->
+        <hr class="sc-hr-white" style="margin-bottom: 0; border-top-color: rgba(255, 255, 255, 0.11); border-bottom-color: rgba(0, 0, 0, 0.14);">
+        <span style="position: relative; top: -0.7em; width: 7em; left: calc(50% - 3.5em); color: rgba(255, 255, 255, 0.29); background: #244560; padding: 0 0.2em;">Administração</span>
+        <div class="bloco-lista">
+          <div ng-show="user.status" ng-click="openChat(user)" class="bloco-user" ng-repeat="user in users.administracoes">
+            <div class="photo">
+              <img ng-src="{{user.foto}}">
+            </div>
+            <div class="nome">
+              <div>
+                <span>{{user.nome}}</span>
+                <div class="subscript" ng-show="user.tipo_conta">{{user.tipo_conta}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-hide="chatDef.suporte" class="chat-body"> <!-- Moradores -->
+        <hr class="sc-hr-white" style="margin-bottom: 0; border-top-color: rgba(255, 255, 255, 0.11); border-bottom-color: rgba(0, 0, 0, 0.14);">
+        <span style="position: relative; top: -0.7em; width: 5.2em; left: calc(50% - 2.5em); color: rgba(255, 255, 255, 0.29); background: #244560; padding: 0 0.2em;">Moradores</span>
+        <div class="bloco-lista">
+          <div ng-show="user.status" ng-click="openChat(user)" class="bloco-user" ng-repeat="user in users.moradores">
+            <div class="photo">
+              <img ng-src="{{user.foto}}">
+            </div>
+            <div class="nome">
+              <div>
+                <span>{{user.nome}}</span>
+                <div class="subscript" ng-show="user.tipo_conta">{{user.tipo_conta}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="chatDef.chat">
+    <div class="list-chat" ng-class="{'somente-chat':chatDef.chat && !chatDef.open}">
+      <div id="caixa-conversa" ng-hide="$index >= chatDef.limit " ng-repeat="chat in chats | orderBy:'$index':true" ng-class="{'openCaixa':chat.open}">
+        <div ng-click="chat.open = !chat.open" class="caixa-top">
+          <span class="title">{{chat.nome}}</span>
+          <div>
+            <i sc-stop-click ng-click="fecharChat($index)" class="sc-icon sc-icon-fechar-1"></i>
+          </div>
+        </div>
+        <div ng-show="chat.open" class="bloco-conversa sc-scrollbar ng-animation-slider">
+          <div class="top-message sc-text-gray">
+            <div><i style="color: rgb(202, 109, 182)" class="icon icon-user-add sc-text-xl"></i></div>
+            <div><i class="sc-icon sc-icon-engrenagem sc-text-xl"></i></div>
+          </div>
+          <div class="caixa-message sc-scrollbar">
+            <div ng-repeat="conv in chat.conversas" class="message" ng-class="conv.recebe ? 'message-recebe':'message-envia' ">
+              <div ng-show="conv.recebe" style="border-radius: 50.6%; width: 2.9em; height: 2.5em; background: #efefef; z-index: 13;">
+                <div class="photo-message">
+                  <img ng-src="{{chat.foto}}">
+                </div>
+              </div>
+              <div class="texto">
+                <p>{{conv.texto}}</p>
+              </div>
+              <div class="last-update">
+                <span style="font-size: 0.6em; margin-left: 0.5em; color: #717171">{{conv.hora | date: 'HH:mm'}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="send-message">
+            <textarea ng-model="chat.typeMessage" placeholder="Digite uma mensagem"></textarea>
+            <div><i ng-click="addMessage(chat)" class="sc-badge-hover-green icon icon-send sc-text-lg"></i></div>
+          </div>
+        </div>
+      </div>
+      <div id="caixa-conversa" ng-show="$index >= chatDef.limit ">
+        <div class="caixa-top">
+          <span class="title">Ver mais</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
