@@ -130,10 +130,10 @@
   <div ng-show="chatDef.chat && chats.length">
     <div class="list-chat col-sm-12 col-xs-12 sc-p-none" ng-class="{'somente-chat':chatDef.chat && !chatDef.open}">
       <div id="caixa-conversa" class="col-xs-12 col-sm-12 sc-p-none" ng-hide="$index >= chatDef.limit " ng-repeat="chat in chats | orderBy:'$index':true" ng-class="{'openCaixa':chat.open}">
-        <div ng-click="chat.open = !chat.open" class="caixa-top">
+        <div ng-click="minimizeChat(chat)" class="caixa-top" ng-class="{'sc-cursor-default':!chatDef.mobile}">
           <span class="title">{{chat.nome}}</span>
           <div>
-            <i sc-stop-click ng-click="fecharChat($index)" class="sc-icon sc-icon-fechar-1"></i>
+            <i sc-stop-click ng-click="fecharChat($index)" class="sc-icon sc-icon-fechar-1 sc-cursor-pointer"></i>
           </div>
         </div>
         <div ng-show="chat.open" class="bloco-conversa sc-scrollbar ng-animation-slider">
@@ -164,7 +164,7 @@
             </div>
           </div>
           <div class="send-message">
-            <textarea ng-keyup="digitando(chat)" ng-keydown="parandoDigitar(chat)" ng-model="chat.typeMessage" placeholder="Digite uma mensagem"></textarea>
+            <textarea ng-keyup="digitando(chat)" ng-model="chat.typeMessage" placeholder="Digite uma mensagem"></textarea>
             <div><i ng-click="addMessage(chat)" class="sc-badge-hover-green icon icon-send sc-text-lg"></i></div>
           </div>
         </div>

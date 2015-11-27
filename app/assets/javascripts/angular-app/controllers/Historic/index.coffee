@@ -148,6 +148,8 @@ angular.module 'app'
           sc.chatDef.open = false unless sc.chatDef.fixed
           sc.chatDef.chat = true
           angular.element('body').css("overflow", "hidden") unless angular.element('html').outerWidth() >= 480
+          sc.chatDef.mobile = false
+          sc.chatDef.mobile = true if angular.element('html').outerWidth() >= 480
 
       sc.fecharChat = (index)->
         sc.chats.splice index, 1
@@ -193,7 +195,8 @@ angular.module 'app'
                 label: 'Ativar'
                 color: 'green'
                 action: ->
-                  sc.chatDef.open = sc.chatDef.active = sc.chatDef.fixed = true
+                  sc.chatDef.open = sc.chatDef.active = true
+                  sc.atualizaMenuFix()
               }
             ]
 
@@ -216,19 +219,27 @@ angular.module 'app'
             angular.element('body').css("width", "100%")
         else
           $timeout ->
-              sc.chatDef.fixed = sc.chatDef.open = false
-            angular.element('#chat').css("position", "absolute")
-            angular.element('#chat').css("border-radius", ".3em .3em 0 0")
-            angular.element('body').css("width", "100%")
+            sc.chatDef.fixed = sc.chatDef.open = false
+          angular.element('#chat').css("position", "absolute")
+          angular.element('#chat').css("border-radius", ".3em .3em 0 0")
+          angular.element('body').css("width", "100%")
+        if win.outerWidth() <= 480
+          sc.chatDef.open = false if sc.chatDef.chat
+          sc.chatDef.mobile = false
 
       sc.atualizaMenuFix()
 
-      sc.parandoDigitar = (obj)->
-        $timeout ->
-          obj.type = false
-        , 4000
+      typeTimeout = null
 
       sc.digitando = (obj)->
         obj.type = true
+        clearTimeout typeTimeout if typeTimeout
+        typeTimeout = setTimeout ->
+          sc.$apply ->
+            obj.type = false
+        , 900
+
+      sc.minimizeChat = (obj)->
+        obj.open = !obj.open if sc.chatDef.mobile
   ]
 
