@@ -8,13 +8,13 @@ angular.module 'app'
           nome: "Tire sua duvida"
           tipo_conta: 'Suporte'
           status: true
-          foto: 'https://staging.seucondominio.com.br/assets/responsivo/predio-e85d8c4a02b1ed922ab06ddc1b7f1bbf.png'
+          foto: '//staging.seucondominio.com.br/assets/responsivo/predio-e85d8c4a02b1ed922ab06ddc1b7f1bbf.png'
         suportes: [
           {
             nome: "Aguardando Atendimento"
             tipo_conta: 'Duvida'
             status: true
-            foto: 'http://www.todaletra.com.br/wp-content/uploads/2012/10/duvidas-300x3001.jpg'
+            foto: '//www.todaletra.com.br/wp-content/uploads/2012/10/duvidas-300x3001.jpg'
             conversas: [
               {texto: 'Oi',             recebe: true, hora: new Date()}
             ]
@@ -23,7 +23,7 @@ angular.module 'app'
             nome: "Aguardando Atendimento"
             tipo_conta: 'Ajuda'
             status: true
-            foto: 'http://www.todaletra.com.br/wp-content/uploads/2012/09/d%C3%BAvida.jpg'
+            foto: '//www.todaletra.com.br/wp-content/uploads/2012/09/d%C3%BAvida.jpg'
             conversas: [
               {texto: 'Oi',             recebe: true, hora: new Date()}
             ]
@@ -32,7 +32,7 @@ angular.module 'app'
             nome: "Aguardando Atendimento"
             tipo_conta: 'Ajuda'
             status: true
-            foto: 'http://www.todaletra.com.br/wp-content/uploads/2012/09/d%C3%BAvida.jpg'
+            foto: '//www.todaletra.com.br/wp-content/uploads/2012/09/d%C3%BAvida.jpg'
             conversas: [
               {texto: 'Oi',             recebe: true, hora: new Date()}
             ]
@@ -41,7 +41,7 @@ angular.module 'app'
             nome: "Aguardando Atendimento"
             tipo_conta: 'Duvida'
             status: true
-            foto: 'http://www.todaletra.com.br/wp-content/uploads/2012/10/duvidas-300x3001.jpg'
+            foto: '//www.todaletra.com.br/wp-content/uploads/2012/10/duvidas-300x3001.jpg'
             conversas: [
               {texto: 'Oi',             recebe: true, hora: new Date()}
             ]
@@ -52,7 +52,7 @@ angular.module 'app'
             nome: "Jubileu Tadeu Benzeno"
             tipo_conta: 'Sindico'
             status: true
-            foto: "http://www.revistabula.com/wp/wp-content/uploads/2013/06/Fernando-Pessoa-620x400.jpg"
+            foto: "//www.revistabula.com/wp/wp-content/uploads/2013/06/Fernando-Pessoa-620x400.jpg"
             conversas: [
               {texto: 'Olá.',           recebe: true, hora: new Date()}
               {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
@@ -64,7 +64,7 @@ angular.module 'app'
             nome: "Relson Mescleu"
             tipo_conta: 'Porteiro'
             status: true
-            foto: "http://img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
+            foto: "//img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
             conversas: [
               {texto: 'Olá.',           recebe: true, hora: new Date()}
               {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
@@ -77,13 +77,13 @@ angular.module 'app'
           {
             nome: "Jubileu Tadeu Benzeno"
             status: true
-            foto: 'http://www2.uol.com.br/vivermente/noticias/img/voce_e_uma_pessoa_boa__1__2014-01-08155855.jpg'
+            foto: '//www2.uol.com.br/vivermente/noticias/img/voce_e_uma_pessoa_boa__1__2014-01-08155855.jpg'
             conversas: []
           }
           {
             nome: "Relson Mescleu"
             status: true
-            foto: 'http://www.sitedecuriosidades.com/im/g/CEA60.jpg'
+            foto: '//www.sitedecuriosidades.com/im/g/CEA60.jpg'
             conversas: [
               {texto: 'Olá.',           recebe: true, hora: new Date()}
               {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
@@ -94,19 +94,19 @@ angular.module 'app'
           {
             nome: "Body do enzi"
             status: true
-            foto: 'https://pbs.twimg.com/profile_images/453273471234375682/cPc0k7E6.jpeg'
+            foto: '//pbs.twimg.com/profile_images/453273471234375682/cPc0k7E6.jpeg'
             conversas: []
           }
           {
             nome: "Anna Maria"
             status: true
-            foto: 'http://www.paranaportal.com.br/wp-content/uploads/2015/06/fernando-pessoa.jpg'
+            foto: '//www.paranaportal.com.br/wp-content/uploads/2015/06/fernando-pessoa.jpg'
             conversas: []
           }
           {
             nome: "Jubileu Tadeu Benzeno"
             status: true
-            foto: 'https://mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
+            foto: '//mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
             conversas: [
               {texto: 'Olá.',           recebe: true, hora: new Date()}
               {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
@@ -117,19 +117,19 @@ angular.module 'app'
           {
             nome: "Relson Mescleu"
             status: true
-            foto: 'https://mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
+            foto: '//mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
             conversas: []
           }
           {
             nome: "Body do enzi"
             status: true
-            foto: 'https://mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
+            foto: '//mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
             conversas: []
           }
           {
             nome: "Anna Maria"
             status: true
-            foto: 'https://mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
+            foto: '//mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
             conversas: []
           }
         ]
@@ -179,7 +179,6 @@ angular.module 'app'
 
       atualizaMenuFix = ()->
         win = angular.element('html')
-        console.log win.outerWidth()
         if win.outerWidth() >= 1500
           $timeout ->
             sc.chatDef.open = sc.chatDef.fixed = true
