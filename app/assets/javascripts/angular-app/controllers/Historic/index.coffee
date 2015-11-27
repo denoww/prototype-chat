@@ -1,7 +1,7 @@
 angular.module 'app'
   .controller 'Contato::indexCtrl', [
-    '$scope', '$filter', '$timeout'
-    (sc, $filter, $timeout)->
+    '$scope', '$filter', '$timeout', 'scAlert'
+    (sc, $filter, $timeout, scAlert)->
 
       sc.users =
         suporte:
@@ -147,9 +147,11 @@ angular.module 'app'
           sc.chats[sc.chats.length-1].open = true
           sc.chatDef.open = false unless sc.chatDef.fixed
           sc.chatDef.chat = true
+          angular.element('body').css("overflow", "hidden") unless angular.element('html').outerWidth() >= 480
 
       sc.fecharChat = (index)->
         sc.chats.splice index, 1
+        angular.element('body').css("overflow", "auto") unless angular.element('html').outerWidth() >= 480
 
       ja_aberto = (obj)->
         for i in sc.chats
@@ -175,23 +177,58 @@ angular.module 'app'
 
         obj.typeMessage = ''
 
-      $(window).resize -> atualizaMenuFix()
+      sc.openBatePapo = ()->
+        if sc.chatDef.active
+          sc.chatDef.open = !sc.chatDef.open
+        else
+          scAlert.open
+            title: 'Deseja ativar o bate papo?'
+            messages: 'No momento seu Bate Papo se encontra desativado, ative para continuar'
+            buttons: [
+              {
+                label: 'Cancelar'
+                color: 'gray'
+              }
+              {
+                label: 'Ativar'
+                color: 'green'
+                action: ->
+                  sc.chatDef.open = sc.chatDef.active = sc.chatDef.fixed = true
+              }
+            ]
 
-      atualizaMenuFix = ()->
+      $(window).resize -> sc.atualizaMenuFix()
+
+      sc.atualizaMenuFix = ()->
         win = angular.element('html')
-        if win.outerWidth() >= 1500
-          $timeout ->
-            sc.chatDef.open = sc.chatDef.fixed = true
-          angular.element('#chat').css("position", "fixed")
-          angular.element('#chat').css("border-radius", "0")
-          angular.element('body').css("width", "calc(100% - 16.25em)")
+        if sc.chatDef.active
+          if win.outerWidth() >= 1500
+            $timeout ->
+              sc.chatDef.open = sc.chatDef.fixed = true
+            angular.element('#chat').css("position", "fixed")
+            angular.element('#chat').css("border-radius", "0")
+            angular.element('body').css("width", "calc(100% - 16.25em)")
+          else
+            $timeout ->
+              sc.chatDef.fixed = false
+            angular.element('#chat').css("position", "absolute")
+            angular.element('#chat').css("border-radius", ".3em .3em 0 0")
+            angular.element('body').css("width", "100%")
         else
           $timeout ->
-            sc.chatDef.fixed = false
-          angular.element('#chat').css("position", "absolute")
-          angular.element('#chat').css("border-radius", ".3em .3em 0 0")
-          angular.element('body').css("width", "100%")
+              sc.chatDef.fixed = sc.chatDef.open = false
+            angular.element('#chat').css("position", "absolute")
+            angular.element('#chat').css("border-radius", ".3em .3em 0 0")
+            angular.element('body').css("width", "100%")
 
-      atualizaMenuFix()
+      sc.atualizaMenuFix()
+
+      sc.parandoDigitar = (obj)->
+        $timeout ->
+          obj.type = false
+        , 4000
+
+      sc.digitando = (obj)->
+        obj.type = true
   ]
 

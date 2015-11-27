@@ -413,7 +413,63 @@ body.menu-opened .sc-loading {
   height: auto;
 }
 
+.texto.texto-digitando {
+  position:relative;
+  .circle1, .circle2, .circle3 {
+    position: relative;
+  }
+  .circle1 {
+    animation: typeAnimation .2s infinite;
+    animation-delay: 0s;
+    animation-direction: alternate-reverse;
+  }
+  .circle2 {
+    animation: typeAnimation .2s infinite;
+    animation-delay: .1s;
+    animation-direction: alternate-reverse;
+  }
+  .circle3 {
+    animation: typeAnimation .2s infinite;
+    animation-delay: .6s;
+    animation-direction: alternate-reverse;
+  }
+}
+
+// #caixa-conversa .bloco-conversa .caixa-message .message-envia .texto .text-digitando {
+//   animation: typeAnimation infinity;
+// }
+
+@keyframes typeAnimation {
+  0% {
+    // top: .2em;
+    transform: scale(.7);
+  }
+  50% {
+    // top: 0em;
+    transform: scale(.8);
+  }
+  100% {
+    // top: -.2em;
+    transform: scale(.9);
+  }
+}
+
 @media (max-width: 480px) {
+  .list-chat {
+    height: 100%;
+    padding: 0;
+  }
+  #caixa-conversa {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    .caixa-top {
+      padding: 0.7em;
+    }
+    .bloco-conversa {
+      height: 93%;
+    }
+  }
   .col-sm-12 {
       width: 100% !important;
   }

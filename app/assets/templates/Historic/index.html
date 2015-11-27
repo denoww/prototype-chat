@@ -1,7 +1,16 @@
 <section id="top-menu" class="sc-p-v-sm sc-p-h-xl sc-bg-blue">
   <img style="width: 9em" src="https://www.seucondominio.com.br/assets/institucional/logo-mobile-c07a4de0cd57b02cf5eaffefcda8d48e.png">
+  <div class="sc-align-bottom sc-m-l-lg">
+    <label>
+      <div class="sc-text-white">Ativar Bate Papo?</div>
+      <span class="sc-toggle" >
+        <input ng-change="atualizaMenuFix()" ng-model="chatDef.active" type="checkbox" checked />
+        <span label-true="sim" label-false="não"></span>
+      </span>
+    </label>
+  </div>
   <div ng-hide="chatDef.fixed" class="pull-right menu-icon">
-    <i ng-click="chatDef.open = !chatDef.open" class="sc-icon sc-icon-comentarios"></i>
+    <i ng-click="openBatePapo()" class="sc-icon sc-icon-comentarios"></i>
   </div>
 </section>
 
@@ -18,7 +27,7 @@
     </div>
     <div class="sc-m-l-lg sc-align-bottom">
       <label>
-        <div class="sc-btn-group sc-text-sm">
+        <div ng-show="chatDef.active" class="sc-btn-group sc-text-sm">
           <button ng-click="chatDef.adm = false; chatDef.usuario = false; chatDef.suporte = true" class="sc-btn" ng-class="chatDef.suporte ? 'sc-btn-gray': 'sc-btn-blue'">Chat Suporte</button>
           <button ng-click="chatDef.adm = false; chatDef.suporte = false; chatDef.usuario = true" class="sc-btn" ng-class="chatDef.usuario ? 'sc-btn-gray': 'sc-btn-blue'">Chat Usuario</button>
           <button ng-click="chatDef.usuario = false; chatDef.suporte = false; chatDef.adm = true" class="sc-btn" ng-class="chatDef.adm ? 'sc-btn-gray': 'sc-btn-blue'">Chat Administrador</button>
@@ -28,7 +37,7 @@
   </div>
 </section>
 
-<section ng-controller="Contato::indexCtrl">
+<section ng-show="chatDef.active" ng-controller="Contato::indexCtrl">
   <div ng-show="chatDef.open" id="chat" class="col-xs-12 col-sm-12 sc-p-none" ng-class="{'open':chatDef.open}">
     <div class="chat-top">
       <span sc-dropdown-menu class="sc-dropdown pull-right">
@@ -118,9 +127,9 @@
     </div>
   </div>
 
-  <div ng-show="chatDef.chat">
-    <div class="list-chat" ng-class="{'somente-chat':chatDef.chat && !chatDef.open}">
-      <div id="caixa-conversa" ng-hide="$index >= chatDef.limit " ng-repeat="chat in chats | orderBy:'$index':true" ng-class="{'openCaixa':chat.open}">
+  <div ng-show="chatDef.chat && chats.length">
+    <div class="list-chat col-sm-12 col-xs-12 sc-p-none" ng-class="{'somente-chat':chatDef.chat && !chatDef.open}">
+      <div id="caixa-conversa" class="col-xs-12 col-sm-12 sc-p-none" ng-hide="$index >= chatDef.limit " ng-repeat="chat in chats | orderBy:'$index':true" ng-class="{'openCaixa':chat.open}">
         <div ng-click="chat.open = !chat.open" class="caixa-top">
           <span class="title">{{chat.nome}}</span>
           <div>
@@ -146,9 +155,16 @@
                 <span style="font-size: 0.6em; margin-left: 0.5em; color: #717171">{{conv.hora | date: 'HH:mm'}}</span>
               </div>
             </div>
+            <div ng-show="chat.type" class="message" ng-class="conv.recebe ? 'message-recebe':'message-envia' ">
+              <div class="texto texto-digitando">
+                <i class="sc-text-xs sc-icon sc-icon-circulo-2 circle1"></i>
+                <i class="sc-text-xs sc-icon sc-icon-circulo-2 circle2"></i>
+                <i class="sc-text-xs sc-icon sc-icon-circulo-2 circle3"></i>
+              </div>
+            </div>
           </div>
           <div class="send-message">
-            <textarea ng-model="chat.typeMessage" placeholder="Digite uma mensagem"></textarea>
+            <textarea ng-keyup="digitando(chat)" ng-keydown="parandoDigitar(chat)" ng-model="chat.typeMessage" placeholder="Digite uma mensagem"></textarea>
             <div><i ng-click="addMessage(chat)" class="sc-badge-hover-green icon icon-send sc-text-lg"></i></div>
           </div>
         </div>
