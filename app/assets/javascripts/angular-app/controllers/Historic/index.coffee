@@ -25,7 +25,7 @@ angular.module 'app'
             status: true
             foto: '//www.todaletra.com.br/wp-content/uploads/2012/09/d%C3%BAvida.jpg'
             conversas: [
-              {texto: 'Oi',             recebe: true, hora: new Date()}
+              {texto: 'Oi',             envia: true, hora: new Date()}
             ]
           }
           {
@@ -43,7 +43,7 @@ angular.module 'app'
             status: true
             foto: '//www.todaletra.com.br/wp-content/uploads/2012/10/duvidas-300x3001.jpg'
             conversas: [
-              {texto: 'Oi',             recebe: true, hora: new Date()}
+              {texto: 'Oi',             envia: true, hora: new Date()}
             ]
           }
         ]
@@ -90,7 +90,7 @@ angular.module 'app'
             status: true
             foto: "//img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
             conversas: [
-              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá.',           envia: true, hora: new Date()}
               {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
               {texto: 'Tudo.',          envia:  true, hora: new Date()}
               {texto: 'Que bom...',     recebe: true, hora: new Date()}
@@ -102,7 +102,7 @@ angular.module 'app'
             status: true
             foto: "//img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
             conversas: [
-              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá.',           envia: true, hora: new Date()}
               {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
               {texto: 'Tudo.',          envia:  true, hora: new Date()}
               {texto: 'Que bom...',     recebe: true, hora: new Date()}
@@ -114,10 +114,10 @@ angular.module 'app'
             status: true
             foto: "//img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
             conversas: [
-              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá.',           envia: true, hora: new Date()}
               {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
               {texto: 'Tudo.',          envia:  true, hora: new Date()}
-              {texto: 'Que bom...',     recebe: true, hora: new Date()}
+              {texto: 'Que bom...',     envia: true, hora: new Date()}
             ]
           }
           {
@@ -126,7 +126,7 @@ angular.module 'app'
             status: true
             foto: "//img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
             conversas: [
-              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá.',           envia: true, hora: new Date()}
               {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
               {texto: 'Tudo.',          envia:  true, hora: new Date()}
               {texto: 'Que bom...',     recebe: true, hora: new Date()}
@@ -145,7 +145,7 @@ angular.module 'app'
             status: true
             foto: '//www.sitedecuriosidades.com/im/g/CEA60.jpg'
             conversas: [
-              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá.',           envia: true, hora: new Date()}
               {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
               {texto: 'Tudo.',          envia:  true, hora: new Date()}
               {texto: 'Que bom...',     recebe: true, hora: new Date()}
@@ -244,33 +244,24 @@ angular.module 'app'
 
       sc.openChat = (obj)->
         unless ja_aberto(obj)
-          console.log sc.chats.length
-          console.log sc.chatDef.limit
-          if sc.chats.length >= sc.chatDef.limit
-            sc.chats[sc.chatDef.limit-1].hide = true
-            objIn =
-              hide: true
-              params: obj
-            sc.chats.splice sc.chatDef.limit-1, 0, objIn
-            sc.chatDef.plus = true
-          else
-            sc.chatDef.plus = false
-            sc.chats.unshift
-              hide: false
-              open: true
-              params: obj
+          sc.chats.splice 0, 1 if sc.chats.length >= sc.chatDef.limit
+          sc.chats.unshift
+            open: true
+            params: obj
           sc.chatDef.open = false unless sc.chatDef.fixed
           sc.chatDef.chat = true
-          angular.element('body').css("overflow", "hidden") unless angular.element('html').outerWidth() >= 480
+          unless angular.element('html').outerWidth() >= 480
+            angular.element('body').css("overflow", "hidden")
           sc.chatDef.mobile = false
           sc.chatDef.mobile = true if angular.element('html').outerWidth() >= 480
         $timeout ->
           sc.atualizaMenuFix()
-        ,500
+        , 500
 
       sc.fecharChat = (index)->
         sc.chats.splice index, 1
-        angular.element('body').css("overflow", "auto") unless angular.element('html').outerWidth() >= 480
+        unless angular.element('html').outerWidth() >= 480
+          angular.element('body').css("overflow", "auto")
         sc.atualizaMenuFix()
 
       ja_aberto = (obj)->
@@ -290,12 +281,13 @@ angular.module 'app'
         sc.batePapo.users = sc.users.moradores
 
       sc.addMessage = (obj)->
-        obj.conversas.push
+        obj.params.conversas.push
           texto: obj.typeMessage
           envia: true
           hora: new Date()
 
         obj.typeMessage = ''
+        obj.params.type = false
 
       sc.openBatePapo = ()->
         if sc.chatDef.active
@@ -327,9 +319,11 @@ angular.module 'app'
         listChat = angular.element(".list-chat")
         caixaConversa = angular.element("#caixa-conversa")
 
+        sc.chatDef.limit = parseInt((listChat.outerWidth() / caixaConversa.outerWidth()) - 0.40)
+        console.log sc.chatDef.limit
         $timeout ->
-          sc.chatDef.limit = parseInt((listChat.outerWidth() / caixaConversa.outerWidth()) - 0.40)
-          console.log sc.chatDef.limit
+          sc.chats.splice 0, 1 if sc.chats.length > sc.chatDef.limit && win.outerWidth() > 480
+        ,600
 
 
         if sc.chatDef.active
@@ -357,11 +351,11 @@ angular.module 'app'
       typeTimeout = null
 
       sc.digitando = (obj)->
-        obj.type = true
+        obj.params.type = true
         clearTimeout typeTimeout if typeTimeout
         typeTimeout = setTimeout ->
           sc.$apply ->
-            obj.type = false
+            obj.params.type = false
         , 900
 
       sc.minimizeChat = (obj)->

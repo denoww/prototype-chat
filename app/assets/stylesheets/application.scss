@@ -466,29 +466,26 @@ body.menu-opened .sc-loading {
   }
 }
 
-// #caixa-conversa .bloco-conversa .caixa-message .message-envia .texto .text-digitando {
-//   animation: typeAnimation infinity;
-// }
-
 @keyframes typeAnimation {
   0% {
-    // top: .2em;
     transform: scale(.7);
   }
   50% {
-    // top: 0em;
     transform: scale(.8);
   }
   100% {
-    // top: -.2em;
     transform: scale(.9);
   }
 }
 
 @media (max-width: 480px) {
-  .list-chat {
+  .list, .list-chat {
     height: 100%;
     padding: 0;
+  }
+  #caixa {
+    height: 100%;
+    width: 100%;
   }
   #caixa-conversa {
     margin: 0;
