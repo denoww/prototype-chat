@@ -72,6 +72,66 @@ angular.module 'app'
               {texto: 'Que bom...',     recebe: true, hora: new Date()}
             ]
           }
+          {
+            nome: "Relson Mescleu"
+            tipo_conta: 'Porteiro'
+            status: true
+            foto: "//img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
+            conversas: [
+              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
+              {texto: 'Tudo.',          envia:  true, hora: new Date()}
+              {texto: 'Que bom...',     recebe: true, hora: new Date()}
+            ]
+          }
+          {
+            nome: "Relson Mescleu"
+            tipo_conta: 'Porteiro'
+            status: true
+            foto: "//img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
+            conversas: [
+              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
+              {texto: 'Tudo.',          envia:  true, hora: new Date()}
+              {texto: 'Que bom...',     recebe: true, hora: new Date()}
+            ]
+          }
+          {
+            nome: "Relson Mescleu"
+            tipo_conta: 'Porteiro'
+            status: true
+            foto: "//img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
+            conversas: [
+              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
+              {texto: 'Tudo.',          envia:  true, hora: new Date()}
+              {texto: 'Que bom...',     recebe: true, hora: new Date()}
+            ]
+          }
+          {
+            nome: "Relson Mescleu"
+            tipo_conta: 'Porteiro'
+            status: true
+            foto: "//img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
+            conversas: [
+              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
+              {texto: 'Tudo.',          envia:  true, hora: new Date()}
+              {texto: 'Que bom...',     recebe: true, hora: new Date()}
+            ]
+          }
+          {
+            nome: "Relson Mescleu"
+            tipo_conta: 'Porteiro'
+            status: true
+            foto: "//img.ibxk.com.br/2012/1/materias/17166216157.jpg?w=1040&h=585&mode=crop"
+            conversas: [
+              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
+              {texto: 'Tudo.',          envia:  true, hora: new Date()}
+              {texto: 'Que bom...',     recebe: true, hora: new Date()}
+            ]
+          }
         ]
         moradores: [
           {
@@ -92,10 +152,43 @@ angular.module 'app'
             ]
           }
           {
+            nome: "Relson Mescleu"
+            status: true
+            foto: '//www.sitedecuriosidades.com/im/g/CEA60.jpg'
+            conversas: [
+              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
+              {texto: 'Tudo.',          envia:  true, hora: new Date()}
+              {texto: 'Que bom...',     recebe: true, hora: new Date()}
+            ]
+          }
+          {
             nome: "Body do enzi"
             status: true
             foto: '//pbs.twimg.com/profile_images/453273471234375682/cPc0k7E6.jpeg'
             conversas: []
+          }
+          {
+            nome: "Relson Mescleu"
+            status: true
+            foto: '//www.sitedecuriosidades.com/im/g/CEA60.jpg'
+            conversas: [
+              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
+              {texto: 'Tudo.',          envia:  true, hora: new Date()}
+              {texto: 'Que bom...',     recebe: true, hora: new Date()}
+            ]
+          }
+          {
+            nome: "Relson Mescleu"
+            status: true
+            foto: '//www.sitedecuriosidades.com/im/g/CEA60.jpg'
+            conversas: [
+              {texto: 'Olá.',           recebe: true, hora: new Date()}
+              {texto: 'Olá, tudo bem?', recebe: true, hora: new Date()}
+              {texto: 'Tudo.',          envia:  true, hora: new Date()}
+              {texto: 'Que bom...',     recebe: true, hora: new Date()}
+            ]
           }
           {
             nome: "Anna Maria"
@@ -134,6 +227,14 @@ angular.module 'app'
           }
         ]
 
+      sc.historyChat = ()->
+        conversas = []
+        for k, v of sc.users
+          if v.length
+            for i in v
+              conversas.push i if i.conversas.length
+        conversas
+
       sc.batePapo =
         adm: true
         morador: false
@@ -143,17 +244,34 @@ angular.module 'app'
 
       sc.openChat = (obj)->
         unless ja_aberto(obj)
-          sc.chats.push obj
-          sc.chats[sc.chats.length-1].open = true
+          console.log sc.chats.length
+          console.log sc.chatDef.limit
+          if sc.chats.length >= sc.chatDef.limit
+            sc.chats[sc.chatDef.limit-1].hide = true
+            objIn =
+              hide: true
+              params: obj
+            sc.chats.splice sc.chatDef.limit-1, 0, objIn
+            sc.chatDef.plus = true
+          else
+            sc.chatDef.plus = false
+            sc.chats.unshift
+              hide: false
+              open: true
+              params: obj
           sc.chatDef.open = false unless sc.chatDef.fixed
           sc.chatDef.chat = true
           angular.element('body').css("overflow", "hidden") unless angular.element('html').outerWidth() >= 480
           sc.chatDef.mobile = false
           sc.chatDef.mobile = true if angular.element('html').outerWidth() >= 480
+        $timeout ->
+          sc.atualizaMenuFix()
+        ,500
 
       sc.fecharChat = (index)->
         sc.chats.splice index, 1
         angular.element('body').css("overflow", "auto") unless angular.element('html').outerWidth() >= 480
+        sc.atualizaMenuFix()
 
       ja_aberto = (obj)->
         for i in sc.chats
@@ -199,28 +317,35 @@ angular.module 'app'
                   sc.atualizaMenuFix()
               }
             ]
+        # sc.atualizaMenuFix()
 
       $(window).resize -> sc.atualizaMenuFix()
 
       sc.atualizaMenuFix = ()->
         win = angular.element('html')
+
+        listChat = angular.element(".list-chat")
+        caixaConversa = angular.element("#caixa-conversa")
+
+        $timeout ->
+          sc.chatDef.limit = parseInt((listChat.outerWidth() / caixaConversa.outerWidth()) - 0.40)
+          console.log sc.chatDef.limit
+
+
         if sc.chatDef.active
           if win.outerWidth() >= 1500
             $timeout ->
               sc.chatDef.open = sc.chatDef.fixed = true
-            angular.element('#chat').css("position", "fixed")
             angular.element('#chat').css("border-radius", "0")
             angular.element('body').css("width", "calc(100% - 16.25em)")
           else
             $timeout ->
               sc.chatDef.fixed = false
-            angular.element('#chat').css("position", "absolute")
             angular.element('#chat').css("border-radius", ".3em .3em 0 0")
             angular.element('body').css("width", "100%")
         else
           $timeout ->
             sc.chatDef.fixed = sc.chatDef.open = false
-          angular.element('#chat').css("position", "absolute")
           angular.element('#chat').css("border-radius", ".3em .3em 0 0")
           angular.element('body').css("width", "100%")
         if win.outerWidth() <= 480

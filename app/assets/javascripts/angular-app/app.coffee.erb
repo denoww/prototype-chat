@@ -29,8 +29,9 @@ angular.module 'app', [
   (sc, $filter, $timeout)->
 
     sc.chatDef =
-      limit: 10000
+      limit: 0
       adm: false
+      plus: false
       open: false
       chat: false
       fixed: false
@@ -38,6 +39,8 @@ angular.module 'app', [
       mobile: false
       suporte: true
       usuario: false
+      modeList: false
+      modeRecente: true
 ]
 
 $(window).load ()->

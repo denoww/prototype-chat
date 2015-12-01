@@ -37,6 +37,25 @@
   </div>
 </section>
 
+<section id="corpo">
+  <div class="ultimas_conversas">
+    <div class="bloco-user" ng-repeat="listChat in historyChat()">
+      <div class="photo">
+        <img style="width: 2.9em;" ng-src="{{listChat.foto}}">
+      </div>
+      <div class="nome">
+        <div>
+          <span>{{listChat.nome}}</span>
+          <div class="subscript">{{listChat.conversas[listChat.conversas.length-1].texto}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="conversa_atual">
+
+  </div>
+</section>
+
 <section ng-show="chatDef.active" ng-controller="Contato::indexCtrl">
   <div ng-show="chatDef.open" id="chat" class="col-xs-12 col-sm-12 sc-p-none" ng-class="{'open':chatDef.open}">
     <div class="chat-top">
@@ -55,7 +74,11 @@
         <input placeholder="Buscar" />
       </div>
     </div>
-    <div style="height: 100%; overflow-y: auto" class="sc-scrollbar">
+    <div class="bloco-option">
+      <button ng-click="chatDef.modeRecente = true; chatDef.modeList = false" ng-class="{'active':chatDef.modeRecente}"><i class="icon icon-history"></i></button>
+      <button ng-click="chatDef.modeList = true; chatDef.modeRecente = false" ng-class="{'active':chatDef.modeList}"><i class="icon icon-list2"></i></button>
+    </div>
+    <div ng-if="chatDef.modeList" style="height: calc(100% - 92px); overflow-y: auto" class="sc-scrollbar">
       <div ng-hide="chatDef.suporte" class="chat-body"> <!-- Suporte (user/morador) -->
         <hr class="sc-hr-white" style="margin-bottom: 0; border-top-color: rgba(255, 255, 255, 0.11); border-bottom-color: rgba(0, 0, 0, 0.14);">
         <span style="position: relative; top: -0.7em; width: 3.9em; left: calc(50% - 2em); color: rgba(255, 255, 255, 0.29); background: #244560; padding: 0 0.2em;">Suporte</span>
@@ -68,6 +91,7 @@
               <div>
                 <span>{{users.suporte.nome}}</span>
                 <div class="subscript" ng-show="users.suporte.tipo_conta">{{users.suporte.tipo_conta}}</div>
+                <i class="status"></i>
               </div>
             </div>
           </div>
@@ -94,9 +118,9 @@
         <hr class="sc-hr-white" style="margin-bottom: 0; border-top-color: rgba(255, 255, 255, 0.11); border-bottom-color: rgba(0, 0, 0, 0.14);">
         <span style="position: relative; top: -0.7em; width: 7em; left: calc(50% - 3.5em); color: rgba(255, 255, 255, 0.29); background: #244560; padding: 0 0.2em;">Administração</span>
         <div class="bloco-lista">
-          <div ng-show="user.status" ng-click="openChat(user)" class="bloco-user" ng-repeat="user in users.administracoes">
+          <div ng-show="user.status" ng-click="openChat(user)" class="bloco-user" ng-repeat="user in users.suportes">
             <div class="photo">
-              <img ng-src="{{user.foto}}">
+              <img style="width: 2.9em;" ng-src="{{user.foto}}">
             </div>
             <div class="nome">
               <div>
@@ -125,13 +149,30 @@
         </div>
       </div>
     </div>
+    <div ng-if="chatDef.modeRecente" style="height: calc(100% - 92px); overflow-y: auto" class="sc-scrollbar">
+      <div class="chat-body">
+        <div class="bloco-lista">
+          <div ng-click="openChat(user)" class="bloco-user" ng-repeat="user in historyChat()">
+            <div class="photo">
+              <img style="width: 2.9em;" ng-src="{{user.foto}}">
+            </div>
+            <div class="nome">
+              <div>
+                <span>{{user.nome}}</span>
+                <div class="subscript">{{user.conversas[user.conversas.length-1].texto}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div ng-show="chatDef.chat && chats.length">
     <div class="list-chat col-sm-12 col-xs-12 sc-p-none" ng-class="{'somente-chat':chatDef.chat && !chatDef.open}">
-      <div id="caixa-conversa" class="col-xs-12 col-sm-12 sc-p-none" ng-hide="$index >= chatDef.limit " ng-repeat="chat in chats | orderBy:'$index':true" ng-class="{'openCaixa':chat.open}">
+      <div ng-if="!chatDef.plus" id="caixa-conversa" class="col-xs-12 col-sm-12 sc-p-none" ng-repeat="chat in chats" ng-class="{'openCaixa':chat.open}">
         <div ng-click="minimizeChat(chat)" class="caixa-top" ng-class="{'sc-cursor-default':!chatDef.mobile}">
-          <span class="title">{{chat.nome}}</span>
+          <span class="title">{{chat.params.nome}}</span>
           <div>
             <i sc-stop-click ng-click="fecharChat($index)" class="sc-icon sc-icon-fechar-1 sc-cursor-pointer"></i>
           </div>
@@ -142,10 +183,10 @@
             <div><i class="sc-icon sc-icon-engrenagem sc-text-xl"></i></div>
           </div>
           <div class="caixa-message sc-scrollbar">
-            <div ng-repeat="conv in chat.conversas" class="message" ng-class="conv.recebe ? 'message-recebe':'message-envia' ">
+            <div ng-repeat="conv in chat.params.conversas" class="message" ng-class="conv.recebe ? 'message-recebe':'message-envia' ">
               <div ng-show="conv.recebe" style="border-radius: 50.6%; width: 2.9em; height: 2.5em; background: #efefef; z-index: 13;">
                 <div class="photo-message">
-                  <img ng-src="{{chat.foto}}">
+                  <img ng-src="{{chat.params.foto}}">
                 </div>
               </div>
               <div class="texto">
@@ -155,7 +196,7 @@
                 <span style="font-size: 0.6em; margin-left: 0.5em; color: #717171">{{conv.hora | date: 'HH:mm'}}</span>
               </div>
             </div>
-            <div ng-show="chat.type" class="message" ng-class="conv.recebe ? 'message-recebe':'message-envia' ">
+            <div ng-show="chat.params.type" class="message" ng-class="conv.recebe ? 'message-recebe':'message-envia' ">
               <div class="texto texto-digitando">
                 <i class="sc-text-xs sc-icon sc-icon-circulo-2 circle1"></i>
                 <i class="sc-text-xs sc-icon sc-icon-circulo-2 circle2"></i>
@@ -169,8 +210,8 @@
           </div>
         </div>
       </div>
-      <div id="caixa-conversa" ng-show="$index >= chatDef.limit ">
-        <div class="caixa-top">
+      <div ng-if="chatDef.plus">
+        <div id="caixa-conversa" class="caixa-top">
           <span class="title">Ver mais</span>
         </div>
       </div>

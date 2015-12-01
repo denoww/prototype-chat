@@ -77,37 +77,68 @@ body {width: 100%}
 }
 
 .sc-loading.active {
-    opacity: 1;
-    visibility: visible;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%)
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%)
+}
+#corpo {
+  width: 100%;
+  display: flex;
+  .ultimas_conversas {
+    width: 45%;
+    border: 1px solid #DDD;
+    margin: 1em;
+    .bloco-user {
+      border-bottom: 1px solid #DDD;
+      height: 5em;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &.opened {
+        background: #E5E5E5;
+      }
+      .photo {
+        margin: .5em;
+      }
+      .nome {
+        color: #616161;
+        .subscript {
+          color: #A1A1A1;
+        }
+      }
+    }
+  }
+  .conversa_atual {
+    width: 55%;
+  }
 }
 
 .sc-loading-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 98;
-    cursor: wait;
-    opacity: 0;
-    background-color: rgba(0,0,0,0.15);
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 98;
+  cursor: wait;
+  opacity: 0;
+  background-color: rgba(0,0,0,0.15);
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s
 }
 
 .sc-loading-bg.active {
-    opacity: 1
+  opacity: 1
 }
 
 body.menu-opened .sc-loading {
-    left: calc(50% + 5.41667em)
+  left: calc(50% + 5.41667em)
 }
 
 .menu-icon {
@@ -125,7 +156,7 @@ body.menu-opened .sc-loading {
 #chat {
   width: 0;
   height: 90%;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 0;
   background-color: #244560;
@@ -161,30 +192,30 @@ body.menu-opened .sc-loading {
       }
     }
   }
-  .chat-body {
-    .bloco-option {
-      display: flex;
-      button {
-        border: none;
-        cursor: pointer;
-        width: 50%;
-        font-size: 0.9em;
-        height: 3em;
-        background-color: rgba(0,0,0,0.1);
-        color: rgba(255, 255, 255, 0.46);
-        transition-duration: 200ms;
-        &:focus {
-          box-shadow: none;
-        }
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.2);
-        }
+  .bloco-option {
+    display: flex;
+    button {
+      border: none;
+      cursor: pointer;
+      width: 50%;
+      font-size: 0.9em;
+      height: 3em;
+      background-color: rgba(0,0,0,0.1);
+      color: rgba(255, 255, 255, 0.46);
+      transition-duration: 200ms;
+      &:focus {
+        box-shadow: none;
       }
-      button.active {
-        background-color: rgba(0,0,0,.3);
-        color: rgba(255,255,255,0.8);
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
       }
     }
+    button.active {
+      background-color: rgba(0,0,0,.3);
+      color: rgba(255,255,255,0.8);
+    }
+  }
+  .chat-body {
     .bloco-lista {
       .bloco-user {
         display: flex;
@@ -214,7 +245,7 @@ body.menu-opened .sc-loading {
           display: flex;
           justify-content: space-between;
           div {
-            width: 10.5em;
+            width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -401,7 +432,7 @@ body.menu-opened .sc-loading {
   overflow: hidden;
   height: 20.6em;
 
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: calc(100% - 16.25em);
   display: flex;
