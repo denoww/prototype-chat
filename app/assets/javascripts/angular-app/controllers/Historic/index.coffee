@@ -11,6 +11,7 @@ angular.module 'app'
           foto: '//staging.seucondominio.com.br/assets/responsivo/predio-e85d8c4a02b1ed922ab06ddc1b7f1bbf.png'
         suportes: [
           {
+            id: 0
             nome: "Aguardando Atendimento"
             tipo_conta: 'Duvida'
             status: true
@@ -20,6 +21,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 1
             nome: "Aguardando Atendimento"
             tipo_conta: 'Ajuda'
             status: true
@@ -29,6 +31,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 2
             nome: "Aguardando Atendimento"
             tipo_conta: 'Ajuda'
             status: true
@@ -38,6 +41,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 3
             nome: "Aguardando Atendimento"
             tipo_conta: 'Duvida'
             status: true
@@ -49,6 +53,7 @@ angular.module 'app'
         ]
         administracoes: [
           {
+            id: 4
             nome: "Jubileu Tadeu Benzeno"
             tipo_conta: 'Sindico'
             status: true
@@ -61,6 +66,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 5
             nome: "Relson Mescleu"
             tipo_conta: 'Porteiro'
             status: true
@@ -73,6 +79,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 6
             nome: "Relson Mescleu"
             tipo_conta: 'Porteiro'
             status: true
@@ -85,6 +92,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 7
             nome: "Relson Mescleu"
             tipo_conta: 'Porteiro'
             status: true
@@ -97,6 +105,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 8
             nome: "Relson Mescleu"
             tipo_conta: 'Porteiro'
             status: true
@@ -109,6 +118,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 9
             nome: "Relson Mescleu"
             tipo_conta: 'Porteiro'
             status: true
@@ -121,6 +131,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 10
             nome: "Relson Mescleu"
             tipo_conta: 'Porteiro'
             status: true
@@ -135,12 +146,14 @@ angular.module 'app'
         ]
         moradores: [
           {
+            id: 11
             nome: "Jubileu Tadeu Benzeno"
             status: true
             foto: '//www2.uol.com.br/vivermente/noticias/img/voce_e_uma_pessoa_boa__1__2014-01-08155855.jpg'
             conversas: []
           }
           {
+            id: 12
             nome: "Relson Mescleu"
             status: true
             foto: '//www.sitedecuriosidades.com/im/g/CEA60.jpg'
@@ -152,6 +165,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 13
             nome: "Relson Mescleu"
             status: true
             foto: '//www.sitedecuriosidades.com/im/g/CEA60.jpg'
@@ -163,12 +177,14 @@ angular.module 'app'
             ]
           }
           {
+            id: 14
             nome: "Body do enzi"
             status: true
             foto: '//pbs.twimg.com/profile_images/453273471234375682/cPc0k7E6.jpeg'
             conversas: []
           }
           {
+            id: 15
             nome: "Relson Mescleu"
             status: true
             foto: '//www.sitedecuriosidades.com/im/g/CEA60.jpg'
@@ -180,6 +196,7 @@ angular.module 'app'
             ]
           }
           {
+            id: 16
             nome: "Relson Mescleu"
             status: true
             foto: '//www.sitedecuriosidades.com/im/g/CEA60.jpg'
@@ -191,12 +208,14 @@ angular.module 'app'
             ]
           }
           {
+            id: 17
             nome: "Anna Maria"
             status: true
             foto: '//www.paranaportal.com.br/wp-content/uploads/2015/06/fernando-pessoa.jpg'
             conversas: []
           }
           {
+            id: 18
             nome: "Jubileu Tadeu Benzeno"
             status: true
             foto: '//mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
@@ -208,18 +227,21 @@ angular.module 'app'
             ]
           }
           {
+            id: 19
             nome: "Relson Mescleu"
             status: true
             foto: '//mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
             conversas: []
           }
           {
+            id: 20
             nome: "Body do enzi"
             status: true
             foto: '//mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
             conversas: []
           }
           {
+            id: 21
             nome: "Anna Maria"
             status: true
             foto: '//mulheresnacomputacao.files.wordpress.com/2015/01/3-pessoas-apontando-cc3a2mera.jpg'
@@ -231,8 +253,7 @@ angular.module 'app'
         conversas = []
         for k, v of sc.users
           if v.length
-            for i in v
-              conversas.push i if i.conversas.length
+            conversas.push i for i in v when i.conversas.length
         conversas
 
       sc.batePapo =
@@ -241,33 +262,37 @@ angular.module 'app'
         users: sc.users
 
       sc.chats = []
+      sc.agrupados = []
 
       sc.openChat = (obj)->
         unless ja_aberto(obj)
-          sc.chats.splice 0, 1 if sc.chats.length >= sc.chatDef.limit
-          sc.chats.unshift
-            open: true
-            params: obj
+          if sc.chats.length >= sc.chatDef.limit
+            sc.chatDef.plus = true
+            sc.agrupados.push sc.chats[0]
+            sc.chats.splice 0, 1, { open: true, params: obj }
+          else
+            sc.chats.unshift
+              open: true
+              params: obj
           sc.chatDef.open = false unless sc.chatDef.fixed
           sc.chatDef.chat = true
           unless angular.element('html').outerWidth() >= 480
             angular.element('body').css("overflow", "hidden")
           sc.chatDef.mobile = false
           sc.chatDef.mobile = true if angular.element('html').outerWidth() >= 480
-        $timeout ->
-          sc.atualizaMenuFix()
-        , 500
+          $timeout ->
+            sc.atualizaMenuFix()
+          , 500
 
-      sc.fecharChat = (index)->
-        sc.chats.splice index, 1
+      sc.fecharChat = (obj, index)->
+        obj.splice index, 1
         unless angular.element('html').outerWidth() >= 480
           angular.element('body').css("overflow", "auto")
         sc.atualizaMenuFix()
 
       ja_aberto = (obj)->
-        for i in sc.chats
-          if i == obj
-            return true
+        return true for i in sc.chats when i.params.id == obj.id
+        return true for i in sc.agrupados when i.params.id == obj.id
         return false
 
       sc.listaAdm = ()->
@@ -281,13 +306,15 @@ angular.module 'app'
         sc.batePapo.users = sc.users.moradores
 
       sc.addMessage = (obj)->
-        obj.params.conversas.push
-          texto: obj.typeMessage
-          envia: true
-          hora: new Date()
+        obj.typeMessage ||= ''
+        unless obj.typeMessage == ""
+          obj.params.conversas.push
+            texto: obj.typeMessage
+            envia: true
+            hora: new Date()
 
-        obj.typeMessage = ''
-        obj.params.type = false
+          obj.typeMessage = ''
+          obj.params.type = false
 
       sc.openBatePapo = ()->
         if sc.chatDef.active
@@ -309,7 +336,6 @@ angular.module 'app'
                   sc.atualizaMenuFix()
               }
             ]
-        # sc.atualizaMenuFix()
 
       $(window).resize -> sc.atualizaMenuFix()
 
@@ -319,12 +345,7 @@ angular.module 'app'
         listChat = angular.element(".list-chat")
         caixaConversa = angular.element("#caixa-conversa")
 
-        sc.chatDef.limit = parseInt((listChat.outerWidth() / caixaConversa.outerWidth()) - 0.40)
-        console.log sc.chatDef.limit
-        $timeout ->
-          sc.chats.splice 0, 1 if sc.chats.length > sc.chatDef.limit && win.outerWidth() > 480
-        ,600
-
+        sc.chatDef.limit = parseInt((listChat.outerWidth() / caixaConversa.outerWidth()) - 1.4)
 
         if sc.chatDef.active
           if win.outerWidth() >= 1500
@@ -345,6 +366,24 @@ angular.module 'app'
         if win.outerWidth() <= 480
           sc.chatDef.open = false if sc.chatDef.chat
           sc.chatDef.mobile = false
+
+        reagrupaChat()
+
+      reagrupaChat = ()->
+        while sc.chats.length > sc.chatDef.limit
+          sc.chatDef.plus = true
+          sc.agrupados.push sc.chats[0]
+          sc.chats.splice 0, 1
+
+        while sc.chats.length < sc.chatDef.limit && sc.agrupados.length > 0
+            sc.chats.push sc.agrupados[0]
+            sc.agrupados.splice 0, 1
+
+        sc.chatDef.plus = sc.agrupados.length > 0
+
+      sc.abrirAgrupados = (obj, index)->
+        sc.agrupados.splice index, 1, sc.chats[0]
+        sc.chats.splice 0, 1, obj
 
       sc.atualizaMenuFix()
 

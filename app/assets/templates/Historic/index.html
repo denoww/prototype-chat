@@ -185,12 +185,29 @@
 
   <div class="list" ng-show="chatDef.chat && chats.length">
     <div class="list-chat col-sm-12 col-xs-12 sc-p-none" ng-class="{'somente-chat':chatDef.chat && !chatDef.open}">
+      <div ng-if="chatDef.plus" id="caixa-mais">
+        <div id="caixa-conversa-mais" class="col-xs-12 col-sm-12 sc-p-none">
+          <span sc-dropdown-menu class="sc-dropdown pull-right">
+            <div ng-click="menu.toggle()" style="position: relative" class="caixa-top">
+              <span>
+                <span class="sc-badge"><i class="sc-icon sc-icon-mais-1 sc-p-h-sm sc-p-v-xs"></i>{{agrupados.length}}</span>
+              </span>
+            </div>
+            <ul style="left: auto; right: 0; bottom: 1.6em;" class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+              <li ng-click="abrirAgrupados(listChat, $index)" style="display: flex; align-items: center; justify-content: space-between;" ng-repeat="listChat in agrupados">
+                <a href="">{{listChat.params.nome}}</a>
+                <span><i sc-stop-click ng-click="fecharChat(agrupados, $index)" style="display: inline-flex" class="sc-icon sc-icon-fechar-1 sc-badge-hover-red"></i></span>
+              </li>
+            </ul>
+          </span>
+        </div>
+      </div>
       <div id="caixa" ng-repeat="chat in chats">
-        <div ng-if="!chatDef.plus" id="caixa-conversa" class="col-xs-12 col-sm-12 sc-p-none" ng-class="{'openCaixa':chat.open}">
+        <div id="caixa-conversa" class="col-xs-12 col-sm-12 sc-p-none" ng-class="{'openCaixa':chat.open}">
           <div ng-click="minimizeChat(chat)" class="caixa-top" ng-class="{'sc-cursor-default':!chatDef.mobile}">
             <span class="title">{{chat.params.nome}}</span>
             <div>
-              <i sc-stop-click ng-click="fecharChat($index)" class="sc-icon sc-icon-fechar-1 sc-cursor-pointer"></i>
+              <i sc-stop-click ng-click="fecharChat(chats, $index)" class="sc-icon sc-icon-fechar-1 sc-cursor-pointer"></i>
             </div>
           </div>
           <div ng-show="chat.open" class="bloco-conversa sc-scrollbar ng-animation-slider">
@@ -200,7 +217,7 @@
             </div>
             <div class="caixa-message sc-scrollbar">
               <div ng-repeat="conv in chat.params.conversas" class="message" ng-class="conv.recebe ? 'message-recebe':'message-envia' ">
-                <div ng-show="conv.recebe" style="border-radius: 50.6%; width: 2.9em; height: 2.5em; background: #efefef; z-index: 13;">
+                <div ng-show="conv.recebe" style="border-radius: 50.6%; width: 2.9em; height: 2.5em; background: white; z-index: 13;">
                   <div class="photo-message">
                     <img ng-src="{{chat.params.foto}}">
                   </div>
@@ -225,11 +242,6 @@
               <div><i ng-click="addMessage(chat)" class="sc-badge-hover-green icon icon-send sc-text-lg"></i></div>
             </div>
           </div>
-        </div>
-      </div>
-      <div ng-if="chatDef.plus">
-        <div id="caixa-conversa" class="caixa-top">
-          <span class="title">Ver mais</span>
         </div>
       </div>
     </div>
