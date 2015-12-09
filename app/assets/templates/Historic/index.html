@@ -75,8 +75,8 @@
       </div>
     </div>
     <div class="bloco-option">
-      <button ng-click="chatDef.modeRecente = true; chatDef.modeList = false" ng-class="{'active':chatDef.modeRecente}"><i class="icon icon-history"></i></button>
       <button ng-click="chatDef.modeList = true; chatDef.modeRecente = false" ng-class="{'active':chatDef.modeList}"><i class="icon icon-list2"></i></button>
+      <button ng-click="chatDef.modeRecente = true; chatDef.modeList = false" ng-class="{'active':chatDef.modeRecente}"><i class="icon icon-history"></i></button>
     </div>
     <div ng-if="chatDef.modeList" style="height: calc(100% - 92px); overflow-y: auto" class="sc-scrollbar">
       <div ng-hide="chatDef.suporte" class="chat-body"> <!-- Suporte (user/morador) -->
