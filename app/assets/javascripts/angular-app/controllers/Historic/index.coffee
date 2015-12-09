@@ -370,14 +370,18 @@ angular.module 'app'
         reagrupaChat()
 
       reagrupaChat = ()->
-        while sc.chats.length > sc.chatDef.limit
-          sc.chatDef.plus = true
-          sc.agrupados.push sc.chats[0]
-          sc.chats.splice 0, 1
+        if sc.chatDef.limit >= 1
+          while sc.chats.length > sc.chatDef.limit
+            sc.chatDef.plus = true
+            sc.agrupados.push sc.chats[0]
+            sc.chats.splice 0, 1
 
-        while sc.chats.length < sc.chatDef.limit && sc.agrupados.length > 0
-            sc.chats.push sc.agrupados[0]
-            sc.agrupados.splice 0, 1
+          while sc.chats.length < sc.chatDef.limit && sc.agrupados.length > 0
+              sc.chats.push sc.agrupados[0]
+              sc.agrupados.splice 0, 1
+        else
+          sc.agrupados = []
+          sc.chatDef.plus = false
 
         sc.chatDef.plus = sc.agrupados.length > 0
 
