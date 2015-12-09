@@ -373,11 +373,11 @@ angular.module 'app'
         if sc.chatDef.limit >= 1
           while sc.chats.length > sc.chatDef.limit
             sc.chatDef.plus = true
-            sc.agrupados.push sc.chats[0]
+            sc.agrupados.unshift sc.chats[0]
             sc.chats.splice 0, 1
 
           while sc.chats.length < sc.chatDef.limit && sc.agrupados.length > 0
-              sc.chats.push sc.agrupados[0]
+              sc.chats.unshift sc.agrupados[0]
               sc.agrupados.splice 0, 1
         else
           sc.agrupados = []
